@@ -1,4 +1,6 @@
 import os
+
+
 def rename_files_in_directory(directory, max_length=50):
     # List all files in the directory
     for filename in os.listdir(directory):
@@ -20,6 +22,10 @@ def rename_files_in_directory(directory, max_length=50):
 
             # Rename the file
             os.rename(file_path, new_file_path)
-            print(f'Renamed: {filename} -> {new_filename}')
-directory = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile'
+            print(f"Renamed: {filename} -> {new_filename}")
+
+
+directory = (
+    "/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile"
+)
 rename_files_in_directory(directory)

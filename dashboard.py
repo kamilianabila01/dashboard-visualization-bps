@@ -2159,6 +2159,10 @@ if data_type in data_files:
                 # Menampilkan visualisasi di Streamlit
                     st.plotly_chart(fig)
 
+                # Menentukan data yang dipilih
+                    selected_data_title = 'Indeks Ketimpangan Gender (IKG)'  # Contoh
+                    visual_type = "Line Chart"  # Contoh
+
                 elif selected_data_title == 'Indeks Ketimpangan Gender (IKG)' and visual_type == "Line Chart":
                     st.write("### ")
                     st.markdown("### Visualisasi Indeks Ketimpangan Gender (IKG)")
@@ -2177,30 +2181,40 @@ if data_type in data_files:
                 # Mengubah data menjadi format long untuk visualisasi multi-line plot
                     df_long = df.melt(id_vars='Wilayah', value_vars=['IKG 2021', 'IKG 2022', 'IKG 2023'], var_name='Tahun', value_name='IKG')
 
+                # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
+
+                # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write("Tabel Indeks Ketimpangan Gender (IKG):")
+                        st.dataframe(df)
+
+                # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
                 # Menampilkan filter multiselect untuk memilih tahun
-                    tahun_terpilih = st.multiselect(
-                        'Pilih Tahun yang ingin ditampilkan:',
-                        options=['IKG 2021', 'IKG 2022', 'IKG 2023'],
-                        default=['IKG 2021', 'IKG 2022', 'IKG 2023']
-                    )
+                        tahun_terpilih = st.multiselect(
+                            'Pilih Tahun yang ingin ditampilkan:',
+                            options=['IKG 2021', 'IKG 2022', 'IKG 2023'],
+                            default=['IKG 2021', 'IKG 2022', 'IKG 2023']
+                        )
 
                 # Filter data berdasarkan tahun yang dipilih
                     df_filtered = df_long[df_long['Tahun'].isin(tahun_terpilih)]
 
                 # Membuat visualisasi Line Chart menggunakan Plotly
                     fig = px.line(df_filtered, x='Wilayah', y='IKG', color='Tahun', 
-                                title='Indeks Ketimpangan Gender (IKG) di Wilayah Jawa Timur', 
-                                labels={'IKG': 'Indeks Ketimpangan Gender', 'Tahun': 'Tahun'}, 
-                                markers=True, height=600)
+                                    title='Indeks Ketimpangan Gender (IKG) di Wilayah Jawa Timur', 
+                                    labels={'IKG': 'Indeks Ketimpangan Gender', 'Tahun': 'Tahun'}, 
+                                    markers=True, height=600)
 
                 # Menyesuaikan layout untuk memperjelas visualisasi
                     fig.update_layout(
-                        hovermode="x unified", 
-                        xaxis_title="Wilayah", 
-                        yaxis_title="Indeks Ketimpangan Gender", 
-                        legend_title="Tahun", 
-                        template='plotly_white'
-                    )
+                                hovermode="x unified", 
+                                xaxis_title="Wilayah", 
+                                yaxis_title="Indeks Ketimpangan Gender", 
+                                legend_title="Tahun", 
+                                template='plotly_white'
+                            )
 
                 # Menampilkan visualisasi di Streamlit
                     st.plotly_chart(fig)
