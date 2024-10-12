@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-import plotly.express as px 
+import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -9,13 +9,13 @@ import numpy as np
 import io
 
 # File logo lokal atau URL gambar
-logo_path1 = "/workspaces/dashboard-visualization-bps/logo_bps-removebg-preview.png"  
-logo_path2 = "/workspaces/dashboard-visualization-bps/logo_mojokerto-removebg-preview.png"  
+logo_path1 = "/workspaces/dashboard-visualization-bps/logo_bps-removebg-preview.png"
+logo_path2 = "/workspaces/dashboard-visualization-bps/logo_mojokerto-removebg-preview.png"
 
 
-col1, col2, col3 = st.columns([8, 1, 1])  
+col1, col2, col3 = st.columns([8, 1, 1])
 with col1:
-    st.write("")  
+    st.write("")
 
 with col2:
     st.image(logo_path1, width=100)  # Gambar pertama dengan lebar 100px
@@ -159,6 +159,7 @@ data_files = {
     }
 }
 
+
 def load_data_pdrb(file_path):
     # Tentukan engine berdasarkan ekstensi file
     if file_path.endswith('.xlsx'):
@@ -172,23 +173,27 @@ def load_data_pdrb(file_path):
         data = data[0]
 
     for col in data.columns[1:]:
-        #if data[col].dtype == 'object':  # Check if column type is object (usually string)
-            #data[col] = data[col].replace ('-',100)  # Menampilkan 0
+        # if data[col].dtype == 'object':  # Check if column type is object (usually string)
+        # data[col] = data[col].replace ('-',100)  # Menampilkan 0
 
         # jika semua elemen kolom adalah string
-        if data[col].apply(lambda x: isinstance(x, str)).all():    
-            data[col] = data[col].str.replace('.', '', regex=False)  # Remove thousands separator
-            data[col] = data[col].str.replace(',', '.', regex=False)  # Replace decimal comma with dot
+        if data[col].apply(lambda x: isinstance(x, str)).all():
+            data[col] = data[col].str.replace(
+                '.', '', regex=False)  # Remove thousands separator
+            # Replace decimal comma with dot
+            data[col] = data[col].str.replace(',', '.', regex=False)
             data[col] = data[col].str.replace(' ', '')  # Remove all spaces
-            
+
             try:
-            #if data[col] != '-': 
-                data[col] = pd.to_numeric(data[col], errors='coerce')  # Convert to numeric
+                # if data[col] != '-':
+                data[col] = pd.to_numeric(
+                    data[col], errors='coerce')  # Convert to numeric
             except ValueError as e:
                 st.error(f"Error converting data in column {col}: {e}")
         else:
             try:
-                data[col] = pd.to_numeric(data[col], errors='coerce')  # Convert to numeric, setting invalid parsing as NaN
+                # Convert to numeric, setting invalid parsing as NaN
+                data[col] = pd.to_numeric(data[col], errors='coerce')
             except ValueError as e:
                 st.error(f"Error converting data in column {col}: {e}")
 
@@ -201,7 +206,6 @@ def load_data_pdrb(file_path):
 
     return data
 
-    
 
 # Sidebar menu
 st.sidebar.title("Pilih Jenis Data")
@@ -210,36 +214,46 @@ data_type = st.sidebar.selectbox("Jenis Data:", list(data_files.keys()))
 # Menampilkan judul data berdasarkan jenis data yang dipilih
 if data_type in data_files:
     st.sidebar.title("Pilih Judul Data")
-    selected_data_title = st.sidebar.selectbox("Judul Data:", list(data_files[data_type].keys()))
+    selected_data_title = st.sidebar.selectbox(
+        "Judul Data:", list(data_files[data_type].keys()))
 
  # Menampilkan dropdown jenis visualisasi tergantung pada judul data yang dipilih
  # Visualisasi Data PDRB
     if selected_data_title == 'PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023':
         visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023':
         visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023':
         visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Stacked Bar Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Stacked Bar Chart"])
     elif selected_data_title == 'Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"])
-    
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
+
      # Visualisasi Data Kependudukan
     elif selected_data_title == 'Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Stacked Bar Chart"])
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Stacked Bar Chart"])
     elif selected_data_title == 'Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023':
         visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023':
@@ -249,46 +263,56 @@ if data_type in data_files:
     elif selected_data_title == 'Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023':
         visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])   
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])   
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto, 2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto, 2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Heatmap"]) 
-    
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Heatmap"])
+
     # Visualisasi Data IPM
     elif selected_data_title == 'Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Harapan Lama Sekolah (HLS) 2010-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Angka Melek Huruf (Persen) 2016-2006':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Angka Harapan Hidup Jawa Timur (LF SP2020)':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'IPM Jawa Timur 2010-2023':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Indeks Pembangunan Manusia Menurut Kabupaten dan Kota':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"]) 
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Indeks Pembangunan Manusia (UHH LF SP2020)':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Angka Melek Huruf (Penduduk Usia 15 +)':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"]) 
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Indeks Pemberdayaan Gender':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"]) 
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Indeks Pembangunan Gender':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"]) 
+        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Bar Chart"])
     elif selected_data_title == 'Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF)':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
     elif selected_data_title == 'Indeks Ketimpangan Gender (IKG)':
-        visual_type = st.sidebar.selectbox("Jenis Visualisasi:", ["Line Chart"]) 
+        visual_type = st.sidebar.selectbox(
+            "Jenis Visualisasi:", ["Line Chart"])
 
       # Muat data berdasarkan judul yang dipilih
     if selected_data_title:
-        file_path = data_files[data_type][selected_data_title][0]  # Ambil file path pertama
+        # Ambil file path pertama
+        file_path = data_files[data_type][selected_data_title][0]
         if file_path:  # Pastikan file_path tidak kosong
             data = load_data_pdrb(file_path)
-            
+
             # Cek apakah data berhasil dimuat
             if data is not None and not data.empty:
                 st.title(f"Visualisasi Data: {selected_data_title}")
@@ -297,25 +321,25 @@ if data_type in data_files:
 
             # Tampilan visualisasi berdasarkan pilihan pengguna
                 if selected_data_title == 'PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023' and visual_type == "Line Chart":
-                    st.markdown("### Line Chart Perkembangan Komponen Pengeluaran Kota Mojokerto (2019-2023)")
+                    st.markdown(
+                        "### Line Chart Perkembangan Komponen Pengeluaran Kota Mojokerto (2019-2023)")
 
                     # Contoh data yang sama
                     data = {
-                                'Komponen Pengeluaran': [
-                                'Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah', 
-                                'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'Total PDRB'
-                                ],
-                                    '2019': [4721124.87, 59547.93, 1166741.4, 2421753.8, 675.62, -1568147.03, 6801696.59],
-                                    '2020': [4640562.22, 60735.12, 1060615.21, 2325805.86, 248.82, -1499909.52, 6588057.71],
-                                    '2021': [4846610.83, 63026.04, 1103129.25, 2392008.09, 318.27, -1469460.15, 6935632.33],
-                                    '2022': [5457401.42, 69224.88, 1042001.28, 2622362.96, 332.04, -1554298.51, 7637024.08],
-                                    '2023': [6004657.7, 75126.7, 1089460.58, 2713435.6, 366.07, -1844389.46, 8038657.18]
-                                    }
+                        'Komponen Pengeluaran': [
+                            'Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah',
+                            'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'Total PDRB'
+                        ],
+                        '2019': [4721124.87, 59547.93, 1166741.4, 2421753.8, 675.62, -1568147.03, 6801696.59],
+                        '2020': [4640562.22, 60735.12, 1060615.21, 2325805.86, 248.82, -1499909.52, 6588057.71],
+                        '2021': [4846610.83, 63026.04, 1103129.25, 2392008.09, 318.27, -1469460.15, 6935632.33],
+                        '2022': [5457401.42, 69224.88, 1042001.28, 2622362.96, 332.04, -1554298.51, 7637024.08],
+                        '2023': [6004657.7, 75126.7, 1089460.58, 2713435.6, 366.07, -1844389.46, 8038657.18]
+                    }
 
                     # Membuat DataFrame
                     df = pd.DataFrame(data)
-                    
-                    
+
                     # Mengatur 'Komponen Pengeluaran' sebagai index
                     df.set_index('Komponen Pengeluaran', inplace=True)
 
@@ -324,11 +348,11 @@ if data_type in data_files:
 
                     # Menambahkan garis untuk setiap komponen pengeluaran
                     for column in df.index:
-                            fig.add_trace(go.Scatter(
-                                x=df.columns,
-                                y=df.loc[column],
-                                mode='lines+markers',
-                                name=column
+                        fig.add_trace(go.Scatter(
+                            x=df.columns,
+                            y=df.loc[column],
+                            mode='lines+markers',
+                            name=column
                         ))
 
                     # Mengatur layout
@@ -349,7 +373,7 @@ if data_type in data_files:
                 # Data distribusi PDRB dengan nilai % yang sudah ada di input
                     data = {
                         'Komponen Pengeluaran': [
-                            'Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah', 
+                            'Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah',
                             'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'Total PDRB'
                         ],
                         '2019': ['69.41%', '0.88%', '17.15%', '35.61%', '0.01%', '-23.06%', '100%'],
@@ -371,40 +395,43 @@ if data_type in data_files:
                 # Menghilangkan simbol % agar data bisa divisualisasikan dengan Line Chart
                     df_for_chart = df.copy()
                     for col in df.columns[1:]:
-                        df_for_chart[col] = df_for_chart[col].apply(remove_percentage)
+                        df_for_chart[col] = df_for_chart[col].apply(
+                            remove_percentage)
 
                 # Mengubah DataFrame menjadi format panjang untuk Plotly (untuk visualisasi)
-                    df_melted = df_for_chart.melt(id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Nilai')
+                    df_melted = df_for_chart.melt(
+                        id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Nilai')
 
                 # Debugging: Tampilkan df_melted untuk memastikan strukturnya benar
                     st.write(df_melted)
 
                  # Menampilkan tabel dengan format yang sudah ada simbol %
-                    st.markdown("### Tabel Distribusi PDRB (dalam %)")  # Menampilkan tabel awal
+                    # Menampilkan tabel awal
+                    st.markdown("### Tabel Distribusi PDRB (dalam %)")
                     st.dataframe(df)
 
                 # Membuat Line Chart interaktif
                     fig = px.line(df_melted, x='Tahun', y='Nilai', color='Komponen Pengeluaran',
-                                title='Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran (2019-2023)',
-                                labels={'Nilai': 'Distribusi (%)', 'Komponen Pengeluaran': 'Komponen'},
-                                markers=True, height=600)
+                                  title='Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran (2019-2023)',
+                                  labels={
+                                      'Nilai': 'Distribusi (%)', 'Komponen Pengeluaran': 'Komponen'},
+                                  markers=True, height=600)
 
                 # Menambahkan fitur hover untuk menampilkan data persentase
-                    fig.update_traces(mode="lines+markers", hovertemplate='%{y:.2f}%')
+                    fig.update_traces(mode="lines+markers",
+                                      hovertemplate='%{y:.2f}%')
 
                 # Menampilkan grafik di Streamlit
                     st.plotly_chart(fig)
 
-               
-
-                
-                if selected_data_title == 'Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023' and visual_type == "Bar Chart": 
-                    st.markdown("### Bar Chart komponen pengeluaran (yang bernilai dalam persen)")
+                if selected_data_title == 'Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023' and visual_type == "Bar Chart":
+                    st.markdown(
+                        "### Bar Chart komponen pengeluaran (yang bernilai dalam persen)")
 
                 # Data Laju Pertumbuhan PDRB ADHK 2010
                     data_growth = {
                         'Komponen Pengeluaran': [
-                            'Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah', 
+                            'Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah',
                             'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'PDRB'
                         ],
                         '2019': [5.20, 4.39, 4.46, 4.91, None, None, 5.65],
@@ -425,7 +452,8 @@ if data_type in data_files:
                         if value is None:
                             return None  # Biarkan None apa adanya
                         else:
-                            return f"{value:.2f}%"  # Format dalam bentuk persentase dengan 2 desimal
+                            # Format dalam bentuk persentase dengan 2 desimal
+                            return f"{value:.2f}%"
 
                 # Membuat DataFrame baru dengan format persen
                     df_percent = df_growth.applymap(format_percent)
@@ -435,14 +463,17 @@ if data_type in data_files:
                     st.dataframe(df_percent)
 
                 # Mengubah DataFrame menjadi format panjang untuk Plotly
-                    df_melted_growth = df_growth.reset_index().melt(id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Laju Pertumbuhan')
+                    df_melted_growth = df_growth.reset_index().melt(id_vars='Komponen Pengeluaran',
+                                                                    var_name='Tahun', value_name='Laju Pertumbuhan')
 
                 # Widget untuk memilih tahun
                     tahun_options = df_melted_growth['Tahun'].unique()
-                    selected_tahun = st.multiselect('Pilih tahun untuk ditampilkan:', options=tahun_options, default=tahun_options)
+                    selected_tahun = st.multiselect(
+                        'Pilih tahun untuk ditampilkan:', options=tahun_options, default=tahun_options)
 
                 # Filter data berdasarkan tahun yang dipilih
-                    df_filtered = df_melted_growth[df_melted_growth['Tahun'].isin(selected_tahun)]
+                    df_filtered = df_melted_growth[df_melted_growth['Tahun'].isin(
+                        selected_tahun)]
 
                 # Membuat bar chart interaktif
                     fig = go.Figure()
@@ -450,7 +481,7 @@ if data_type in data_files:
                 # Menambahkan bar untuk setiap komponen pengeluaran yang sesuai dengan tahun yang dipilih
                     for component in df_filtered['Komponen Pengeluaran'].unique():
                         df_component = df_filtered[df_filtered['Komponen Pengeluaran'] == component]
-                        
+
                         fig.add_trace(go.Bar(
                             x=df_component['Tahun'],
                             y=df_component['Laju Pertumbuhan'],
@@ -470,14 +501,13 @@ if data_type in data_files:
                 # Menampilkan plot di Streamlit
                     st.plotly_chart(fig)
 
-                
                 elif selected_data_title == 'Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023' and visual_type == "Line Chart":
                     st.markdown("### Line Chart Indeks Implisit PDRB")
 
                 # Data yang sudah ditampilkan sebelumnya
                     data_implisit = {
-                        'Komponen Pengeluaran': ['Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah', 
-                                                'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'PDRB'],
+                        'Komponen Pengeluaran': ['Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah',
+                                                 'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'PDRB'],
                         '2019': [140.64, 162.07, 167.25, 143.19, None, None, 136.42],
                         '2020': [142.84, 164.81, 159.17, 144.43, None, None, 137.21],
                         '2021': [144.29, 167.42, 165.10, 146.92, None, None, 139.37],
@@ -492,7 +522,8 @@ if data_type in data_files:
                     df_implisit.set_index('Komponen Pengeluaran', inplace=True)
 
                 # Mengubah DataFrame menjadi format panjang untuk Plotly
-                    df_melted_implisit = df_implisit.reset_index().melt(id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Indeks')
+                    df_melted_implisit = df_implisit.reset_index().melt(
+                        id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Indeks')
 
                 # Membuat line chart interaktif
                     fig = go.Figure()
@@ -505,7 +536,7 @@ if data_type in data_files:
                             y=df_component['Indeks'],
                             mode='lines+markers',
                             name=component
-                    ))
+                        ))
 
                 # Mengatur layout
                     fig.update_layout(
@@ -520,25 +551,27 @@ if data_type in data_files:
                     st.plotly_chart(fig)
 
                 elif selected_data_title == 'Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023' and visual_type == "Bar Chart":
-                    st.markdown("### Bar Chart Pertumbuhan Indeks Implisit PDRB")
+                    st.markdown(
+                        "### Bar Chart Pertumbuhan Indeks Implisit PDRB")
 
                 # Data dari tabel (kamu bisa sesuaikan ini untuk mengambil data dari file_path)
                     data_implisit = {
-                         'Komponen Pengeluaran': ['Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah', 
-                                                'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'PDRB'],
-                         '2019': [0.026, 0.0232, 0.0368, 0.0316, None, None, 0.0165],
-                         '2020': [0.0156, 0.0169, -0.0483, 0.0086, None, None, 0.0058],
-                         '2021': [0.0101, 0.0158, 0.0372, 0.0173, None, None, 0.0157],
-                         '2022': [0.0468, 0.0257, -0.0654, 0.0467, None, None, 0.0432],
-                         '2023': [0.0451, 0.0009, 0.0293, 0.0226, None, None, 0.024]
+                        'Komponen Pengeluaran': ['Konsumsi Rumah Tangga', 'Konsumsi LNPRT', 'Konsumsi Pemerintah',
+                                                 'Pembentukan Modal Tetap Bruto', 'Perubahan Inventori', 'Ekspor Netto', 'PDRB'],
+                        '2019': [0.026, 0.0232, 0.0368, 0.0316, None, None, 0.0165],
+                        '2020': [0.0156, 0.0169, -0.0483, 0.0086, None, None, 0.0058],
+                        '2021': [0.0101, 0.0158, 0.0372, 0.0173, None, None, 0.0157],
+                        '2022': [0.0468, 0.0257, -0.0654, 0.0467, None, None, 0.0432],
+                        '2023': [0.0451, 0.0009, 0.0293, 0.0226, None, None, 0.024]
                     }
 
                 # Membuat DataFrame
                     df = pd.DataFrame(data_implisit)
 
                 # Transformasi dari wide ke long format
-                    df_long = df.melt(id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Pertumbuhan')
-                
+                    df_long = df.melt(
+                        id_vars='Komponen Pengeluaran', var_name='Tahun', value_name='Pertumbuhan')
+
                 # Hapus baris dengan nilai None
                     df_long = df_long.dropna(subset=['Pertumbuhan'])
 
@@ -547,7 +580,8 @@ if data_type in data_files:
                         x=alt.X('Tahun:N', title='Tahun'),
                         y=alt.Y('Pertumbuhan:Q', title='Pertumbuhan'),
                         color='Komponen Pengeluaran:N',
-                        tooltip=['Komponen Pengeluaran:N', 'Tahun:N', 'Pertumbuhan:Q']
+                        tooltip=['Komponen Pengeluaran:N',
+                                 'Tahun:N', 'Pertumbuhan:Q']
                     ).properties(
                         title='Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023',
                         width=700,
@@ -556,174 +590,186 @@ if data_type in data_files:
 
                 # Tampilkan chart di Streamlit
                     st.altair_chart(bar_chart, use_container_width=True)
-                
+
                 elif selected_data_title == 'Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023' and visual_type == "Line Chart":
-                    st.markdown("### Line Chart Perkembangan Komponen Konsumsi Rumah Tangga")
+                    st.markdown(
+                        "### Line Chart Perkembangan Komponen Konsumsi Rumah Tangga")
 
                 # Data yang diambil dari tabel
                     data_konsumsi = {
-                        'Uraian': ['Total Konsumsi Rumah Tangga a. ADHB (Juta Rp.)', 
-                                    'Total Konsumsi Rumah Tangga b. ADHK 2010 (Juta Rp.)', 
-                                    'Proporsi terhadap PDRB ADHB', 
-                                    'Rata-rata Konsumsi per Kapita a. ADHB', 
-                                    'Rata-rata Konsumsi per Kapita b. ADHK 2010', 
-                                    'Pertumbuhan a. Total Konsumsi Rumah Tangga', 
-                                    'Pertumbuhan b. Per Kapita', 
-                                    'Jumlah Penduduk (jiwa)'],
-                                    '2019': [4721124.87, 3356940.38, 69.41, 36470, 25930, 5.2, 4.43, 129467],
-                                    '2020': [4640562.22, 3248832.38, 70.44, 35110, 24580, -3.22, -5.21, 132183],
-                                    '2021': [4846610.83, 3359049.51, 69.88, 36310, 25170, 3.39, 2.4, 133476],
-                                    '2022': [5457401.42, 3613284.51, 71.46, 40480, 26800, 7.57, 6.48, 134815],
-                                    '2023': [6004657.70, 3803908.83, 74.69, 44120, 27950, 5.28, 4.29, 136107]
-                                }
+                        'Uraian': ['Total Konsumsi Rumah Tangga a. ADHB (Juta Rp.)',
+                                   'Total Konsumsi Rumah Tangga b. ADHK 2010 (Juta Rp.)',
+                                   'Proporsi terhadap PDRB ADHB',
+                                   'Rata-rata Konsumsi per Kapita a. ADHB',
+                                   'Rata-rata Konsumsi per Kapita b. ADHK 2010',
+                                   'Pertumbuhan a. Total Konsumsi Rumah Tangga',
+                                   'Pertumbuhan b. Per Kapita',
+                                   'Jumlah Penduduk (jiwa)'],
+                        '2019': [4721124.87, 3356940.38, 69.41, 36470, 25930, 5.2, 4.43, 129467],
+                        '2020': [4640562.22, 3248832.38, 70.44, 35110, 24580, -3.22, -5.21, 132183],
+                        '2021': [4846610.83, 3359049.51, 69.88, 36310, 25170, 3.39, 2.4, 133476],
+                        '2022': [5457401.42, 3613284.51, 71.46, 40480, 26800, 7.57, 6.48, 134815],
+                        '2023': [6004657.70, 3803908.83, 74.69, 44120, 27950, 5.28, 4.29, 136107]
+                    }
 
                 # Membuat DataFrame
                     df_konsumsi = pd.DataFrame(data_konsumsi)
 
                 # Mengubah data ke format long/melt agar bisa divisualisasikan dengan Altair
-                    df_konsumsi_melted = df_konsumsi.melt(id_vars='Uraian', 
-                                      var_name='Tahun', 
-                                      value_name='Nilai')
+                    df_konsumsi_melted = df_konsumsi.melt(id_vars='Uraian',
+                                                          var_name='Tahun',
+                                                          value_name='Nilai')
 
                 # Membuat chart interaktif menggunakan Altair
                     chart = alt.Chart(df_konsumsi_melted).mark_line(point=True).encode(
                         x=alt.X('Tahun:N', title='Tahun'),
                         y=alt.Y('Nilai:Q', title='Nilai'),
-                        color=alt.Color('Uraian:N', title='Komponen Pengeluaran'),
-                        tooltip=['Uraian', 'Tahun', 'Nilai']  # Menampilkan tooltip interaktif
+                        color=alt.Color(
+                            'Uraian:N', title='Komponen Pengeluaran'),
+                        # Menampilkan tooltip interaktif
+                        tooltip=['Uraian', 'Tahun', 'Nilai']
                     ).interactive()  # Menambahkan interaksi zoom dan pan
 
                 # Menampilkan chart di Streamlit
                     st.altair_chart(chart, use_container_width=True)
 
                 elif selected_data_title == 'Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023' and visual_type == "Line Chart":
-                    st.markdown("### Line Chart Perkembangan Pengeluaran Konsumsi Akhir")
+                    st.markdown(
+                        "### Line Chart Perkembangan Pengeluaran Konsumsi Akhir")
 
                 # Data Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto
                     data_konsumsi = {
-                        'Uraian': ['Total Konsumsi Rumah Tangga a. ADHB (Juta Rp.)', 
-                        'Total Konsumsi Rumah Tangga b. ADHK 2010 (Juta Rp.)', 
-                        'Proporsi terhadap PDRB ADHB', 
-                        'Rata-rata Konsumsi per Kapita /tahun (Ribu Rp.) a. ADHB', 
-                        'Rata-rata Konsumsi per Kapita /tahun (Ribu Rp.) b. ADHK 2010', 
-                        'Pertumbuhan a. Total konsumsi Rumah', 
-                        'Pertumbuhan b. Per Kapita', 
-                        'Jumlah Penduduk (jiwa)'],
-                    '2019': [1166741.4, 697598.34, 17.15, 9011.88, 5388.23, 4.46, 3.71, 129467],
-                    '2020': [1060615.21, 666328.35, 16.1, 8023.84, 5040.95, -4.48, -6.45, 132183],
-                    '2021': [1103129.25, 668177.7, 15.91, 8264.63, 5005.98, 0.28, -0.69, 133476],
-                    '2022': [1042001.28, 675290.38, 13.64, 7729.12, 5009.02, 1.06, 0.06, 134815],
-                    '2023': [1089460.58, 685936.22, 13.55, 8004.44, 5039.68, 1.58, 0.61, 136107]
+                        'Uraian': ['Total Konsumsi Rumah Tangga a. ADHB (Juta Rp.)',
+                                   'Total Konsumsi Rumah Tangga b. ADHK 2010 (Juta Rp.)',
+                                   'Proporsi terhadap PDRB ADHB',
+                                   'Rata-rata Konsumsi per Kapita /tahun (Ribu Rp.) a. ADHB',
+                                   'Rata-rata Konsumsi per Kapita /tahun (Ribu Rp.) b. ADHK 2010',
+                                   'Pertumbuhan a. Total konsumsi Rumah',
+                                   'Pertumbuhan b. Per Kapita',
+                                   'Jumlah Penduduk (jiwa)'],
+                        '2019': [1166741.4, 697598.34, 17.15, 9011.88, 5388.23, 4.46, 3.71, 129467],
+                        '2020': [1060615.21, 666328.35, 16.1, 8023.84, 5040.95, -4.48, -6.45, 132183],
+                        '2021': [1103129.25, 668177.7, 15.91, 8264.63, 5005.98, 0.28, -0.69, 133476],
+                        '2022': [1042001.28, 675290.38, 13.64, 7729.12, 5009.02, 1.06, 0.06, 134815],
+                        '2023': [1089460.58, 685936.22, 13.55, 8004.44, 5039.68, 1.58, 0.61, 136107]
                     }
 
                 # Membuat DataFrame
                     df_konsumsi = pd.DataFrame(data_konsumsi)
 
                 # Menggunakan melt untuk mengubah data dari wide format menjadi long format agar sesuai dengan Altair
-                    df_konsumsi_melted = df_konsumsi.melt(id_vars='Uraian', 
-                                        var_name='Tahun', 
-                                        value_name='Nilai')
+                    df_konsumsi_melted = df_konsumsi.melt(id_vars='Uraian',
+                                                          var_name='Tahun',
+                                                          value_name='Nilai')
                 # Membuat chart interaktif menggunakan Altair
                     chart = alt.Chart(df_konsumsi_melted).mark_line(point=True).encode(
                         x=alt.X('Tahun:N', title='Tahun'),
                         y=alt.Y('Nilai:Q', title='Nilai'),
-                        color=alt.Color('Uraian:N', title='Komponen Pengeluaran'),
-                        tooltip=['Uraian', 'Tahun', 'Nilai']  # Menampilkan tooltip interaktif
+                        color=alt.Color(
+                            'Uraian:N', title='Komponen Pengeluaran'),
+                        # Menampilkan tooltip interaktif
+                        tooltip=['Uraian', 'Tahun', 'Nilai']
                     ).interactive()  # Menambahkan interaksi zoom dan pan
 
                 # Menampilkan chart di Streamlit
                     st.altair_chart(chart, use_container_width=True)
 
                 elif selected_data_title == 'Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023' and visual_type == "Line Chart":
-                    st.markdown("### Line Chart Laju Indeks Harga Implisit PDRB Kota Mojokerto")    
+                    st.markdown(
+                        "### Line Chart Laju Indeks Harga Implisit PDRB Kota Mojokerto")
 
                 # Data Laju Indeks Harga Implisit PDRB Kota Mojokerto
                     data_pdrb = {
-                                'Jenis Pengeluaran': ['Pengeluaran Konsumsi Rumah Tangga', 
-                                'Pengeluaran Konsumsi LNPRT', 
-                                'Pengeluaran Konsumsi Pemerintah', 
-                                'Pembentukan Modal Tetap Bruto', 
-                                'Perubahan Inventori', 
-                                'Net Ekspor Barang dan Jasa', 
-                                'Total PDRB Pengeluaran (Jumlah 1 sd 6)'],
-                            '2011': [591, 1776, 1423, 786, None, None, 461], 
-                            '2012': [509, 381, 1007, 143, None, None, 429], 
-                            '2013': [376, 804, 359, 479, None, None, 373], 
-                            '2014': [450, 107, 141, 536, None, None, 364], 
-                            '2015': [286, 758, 528, 294, None, None, 428],
-                            '2016': [376, 362, 435, 587, None, None, 401], 
-                            '2017': [283, 322, 518, 218, None, None, 272], 
-                            '2018': [349, 313, 570, 319, None, None, 272], 
-                            '2019': [260, 232, 368, 316, None, None, 165], 
-                            '2020': [80, 169, -483, 86, None, None, 58],
-                            '2021': [94, 158, 341, 173, None, None, 157], 
-                            '2022': [510, 133, -456, 467, None, None, 432], 
-                            '2023': [451, 9, 293, 226, None, None, 240]
-                        }
+                        'Jenis Pengeluaran': ['Pengeluaran Konsumsi Rumah Tangga',
+                                              'Pengeluaran Konsumsi LNPRT',
+                                              'Pengeluaran Konsumsi Pemerintah',
+                                              'Pembentukan Modal Tetap Bruto',
+                                              'Perubahan Inventori',
+                                              'Net Ekspor Barang dan Jasa',
+                                              'Total PDRB Pengeluaran (Jumlah 1 sd 6)'],
+                        '2011': [591, 1776, 1423, 786, None, None, 461],
+                        '2012': [509, 381, 1007, 143, None, None, 429],
+                        '2013': [376, 804, 359, 479, None, None, 373],
+                        '2014': [450, 107, 141, 536, None, None, 364],
+                        '2015': [286, 758, 528, 294, None, None, 428],
+                        '2016': [376, 362, 435, 587, None, None, 401],
+                        '2017': [283, 322, 518, 218, None, None, 272],
+                        '2018': [349, 313, 570, 319, None, None, 272],
+                        '2019': [260, 232, 368, 316, None, None, 165],
+                        '2020': [80, 169, -483, 86, None, None, 58],
+                        '2021': [94, 158, 341, 173, None, None, 157],
+                        '2022': [510, 133, -456, 467, None, None, 432],
+                        '2023': [451, 9, 293, 226, None, None, 240]
+                    }
                 # Membuat DataFrame
                     df_pdrb = pd.DataFrame(data_pdrb)
 
                 # Menggunakan melt untuk mengubah data dari wide format menjadi long format agar sesuai dengan Altair
-                    df_pdrb_melted = df_pdrb.melt(id_vars='Jenis Pengeluaran', 
-                                    var_name='Tahun', 
-                                    value_name='Nilai')
+                    df_pdrb_melted = df_pdrb.melt(id_vars='Jenis Pengeluaran',
+                                                  var_name='Tahun',
+                                                  value_name='Nilai')
                 # Membuat chart interaktif menggunakan Altair
                     chart = alt.Chart(df_pdrb_melted).mark_line(point=True).encode(
                         x=alt.X('Tahun:N', title='Tahun'),
                         y=alt.Y('Nilai:Q', title='Nilai'),
-                        color=alt.Color('Jenis Pengeluaran:N', title='Jenis Pengeluaran'),
-                        tooltip=['Jenis Pengeluaran', 'Tahun', 'Nilai']  # Menampilkan tooltip interaktif
+                        color=alt.Color('Jenis Pengeluaran:N',
+                                        title='Jenis Pengeluaran'),
+                        # Menampilkan tooltip interaktif
+                        tooltip=['Jenis Pengeluaran', 'Tahun', 'Nilai']
                     ).interactive()  # Menambahkan interaksi zoom dan pan
 
                 # Menampilkan chart di Streamlit
                     st.altair_chart(chart, use_container_width=True)
 
                 elif selected_data_title == 'Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023' and visual_type == "Bar Chart":
-                    st.markdown("### Bar Chart Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto (2019-2023)")
+                    st.markdown(
+                        "### Bar Chart Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto (2019-2023)")
 
                 # Data Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku
                     data_pdrb_pie = {
-                                'Jenis Pengeluaran': ['Pengeluaran Konsumsi Rumah Tangga', 
-                                'Pengeluaran Konsumsi LNPRT', 
-                                'Pengeluaran Konsumsi Pemerintah', 
-                                'Pembentukan Modal Tetap Bruto', 
-                                'Perubahan Inventori', 
-                                'Net Ekspor Barang dan Jasa', 
-                                'Total PDRB Pengeluaran (Jumlah 1 sd 6)'],
-                            '2010': [74.2, 0.88, 18.33, 32.78, 0.42, -26.62, 100],
-                            '2011': [74.25, 0.96, 19.35, 33.56, 0.25, -28.37, 100], 
-                            '2012': [73.35, 0.95, 20.5, 33.51, 0, -28.3, 100], 
-                            '2013': [72.36, 0.99, 20.18, 33.51, 0, -27.04, 100], 
-                            '2014': [72.15, 0.98, 19.07, 34.16, 0.31, -26.68, 100], 
-                            '2015': [70.4, 0.93, 18.48, 34.11, 0.02, -23.94, 100],
-                            '2016': [69.6, 0.9, 16.44, 35.82, 0.01, -22.77, 100], 
-                            '2017': [69.08, 0.87, 16.68, 34.98, 0.01, -21.63, 100], 
-                            '2018': [69.06, 0.88, 17.01, 35.33, 0.01, -22.28, 100], 
-                            '2019': [69.41, 0.88, 17.15, 35.61, 0.01, -23.06, 100], 
-                            '2020': [69.91, 0.92, 16.1, 35.3, 0, -22.24, 100],
-                            '2021': [69.3, 0.91, 15.91, 34.49, 0.01, -20.61, 100], 
-                            '2022': [70.76, 0.9, 14.07, 34.34, 0, -20.07, 100], 
-                            '2023': [74.7, 0.93, 13.55, 33.75, 0, -22.94, 100]
-                        }
+                        'Jenis Pengeluaran': ['Pengeluaran Konsumsi Rumah Tangga',
+                                              'Pengeluaran Konsumsi LNPRT',
+                                              'Pengeluaran Konsumsi Pemerintah',
+                                              'Pembentukan Modal Tetap Bruto',
+                                              'Perubahan Inventori',
+                                              'Net Ekspor Barang dan Jasa',
+                                              'Total PDRB Pengeluaran (Jumlah 1 sd 6)'],
+                        '2010': [74.2, 0.88, 18.33, 32.78, 0.42, -26.62, 100],
+                        '2011': [74.25, 0.96, 19.35, 33.56, 0.25, -28.37, 100],
+                        '2012': [73.35, 0.95, 20.5, 33.51, 0, -28.3, 100],
+                        '2013': [72.36, 0.99, 20.18, 33.51, 0, -27.04, 100],
+                        '2014': [72.15, 0.98, 19.07, 34.16, 0.31, -26.68, 100],
+                        '2015': [70.4, 0.93, 18.48, 34.11, 0.02, -23.94, 100],
+                        '2016': [69.6, 0.9, 16.44, 35.82, 0.01, -22.77, 100],
+                        '2017': [69.08, 0.87, 16.68, 34.98, 0.01, -21.63, 100],
+                        '2018': [69.06, 0.88, 17.01, 35.33, 0.01, -22.28, 100],
+                        '2019': [69.41, 0.88, 17.15, 35.61, 0.01, -23.06, 100],
+                        '2020': [69.91, 0.92, 16.1, 35.3, 0, -22.24, 100],
+                        '2021': [69.3, 0.91, 15.91, 34.49, 0.01, -20.61, 100],
+                        '2022': [70.76, 0.9, 14.07, 34.34, 0, -20.07, 100],
+                        '2023': [74.7, 0.93, 13.55, 33.75, 0, -22.94, 100]
+                    }
                 # Membuat DataFrame
                     df = pd.DataFrame(data)
 
                 # Mengubah DataFrame menjadi format panjang
-                    df_melted = df.melt(id_vars=['Jenis Pengeluaran'], var_name='Tahun', value_name='Persentase')
+                    df_melted = df.melt(
+                        id_vars=['Jenis Pengeluaran'], var_name='Tahun', value_name='Persentase')
 
                 # Visualisasi bar chart
                     fig = px.bar(df_melted, x='Tahun', y='Persentase', color='Jenis Pengeluaran', barmode='group',
-                        title='Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran (2010-2023)',
-                        labels={'Persentase': 'Persentase (%)'})
+                                 title='Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran (2010-2023)',
+                                 labels={'Persentase': 'Persentase (%)'})
 
                 # Menampilkan visualisasi di Streamlit
                     st.plotly_chart(fig)
 
                 # Stop further execution so that other visualizations don't appear
                     st.stop()
-                
+
                 elif selected_data_title == 'Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023' and visual_type == "Stacked Bar Chart":
-                    st.markdown("### Stacked Bar Chart Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto (2019-2023)")
+                    st.markdown(
+                        "### Stacked Bar Chart Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto (2019-2023)")
 
                 # Dataframe
                     data = {
@@ -759,61 +805,66 @@ if data_type in data_files:
 
                 # Menampilkan tabel baru dengan nilai dalam persen tanpa tambahan desimal
                     df_percentage = df.copy()
-                    df_percentage.iloc[:, 1:] = df_percentage.iloc[:, 1:].applymap(lambda x: f"{int(x)}%")
+                    df_percentage.iloc[:, 1:] = df_percentage.iloc[:, 1:].applymap(
+                        lambda x: f"{int(x)}%")
 
                 # Menampilkan tabel baru di Streamlit
                     st.markdown("### Tabel Distribusi Persentase")
                     st.dataframe(df_percentage)
 
                 # Mengubah DataFrame menjadi format panjang untuk visualisasi
-                    df_melted = df.melt(id_vars=['Lapangan Usaha'], var_name='Tahun', value_name='Persentase')
+                    df_melted = df.melt(
+                        id_vars=['Lapangan Usaha'], var_name='Tahun', value_name='Persentase')
 
                 # Menambahkan dropdown untuk memilih tahun
-                    selected_year = st.selectbox("Pilih Tahun:", df_melted['Tahun'].unique())
+                    selected_year = st.selectbox(
+                        "Pilih Tahun:", df_melted['Tahun'].unique())
 
                 # Filter data berdasarkan tahun yang dipilih
-                    filtered_data = df_melted[df_melted['Tahun'] == selected_year]
+                    filtered_data = df_melted[df_melted['Tahun']
+                                              == selected_year]
 
                 # Visualisasi stacked bar chart interaktif
-                    fig = px.bar(filtered_data, x='Lapangan Usaha', y='Persentase', color='Lapangan Usaha', 
-                                title=f'Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto ({selected_year})',
-                                labels={'Persentase': 'Persentase (%)', 'Lapangan Usaha': 'Lapangan Usaha'},
-                                text='Persentase',
-                                height=600)
+                    fig = px.bar(filtered_data, x='Lapangan Usaha', y='Persentase', color='Lapangan Usaha',
+                                 title=f'Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto ({selected_year})',
+                                 labels={
+                                     'Persentase': 'Persentase (%)', 'Lapangan Usaha': 'Lapangan Usaha'},
+                                 text='Persentase',
+                                 height=600)
 
                     fig.update_layout(barmode='stack', hovermode='x unified')
-                    
+
                 # Menampilkan visualisasi di Streamlit
                     st.plotly_chart(fig)
 
                 # Stop further execution so that other visualizations don't appear
                     st.stop()
 
-
                 elif selected_data_title == 'Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023' and visual_type == "Line Chart":
-                    st.markdown("### Line Chart Laju Pertumbuhan PDRB Kota Mojokerto Atas Dasar Harga Konstan 2010 Menurut Lapangan Usaha (2019-2023)")
+                    st.markdown(
+                        "### Line Chart Laju Pertumbuhan PDRB Kota Mojokerto Atas Dasar Harga Konstan 2010 Menurut Lapangan Usaha (2019-2023)")
 
                 # Dataframe
                     data = {
                         'Lapangan Usaha': ['Pertanian, Kehutanan, dan Perikanan',
-                                            'Pertambangan dan Penggalian',
-                                            'Industri Pengolahan',
-                                            'Pengadaan Listrik dan Gas',
-                                            'Pengadaan Air, Pengelolaan Sampah, Limbah dan Daur Ulang',
-                                            'Konstruksi',
-                                            'Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor',
-                                            'Transportasi dan Pergudangan',
-                                            'Penyediaan Akomodasi dan Makan Minum',
-                                            'Informasi dan Komunikasi',
-                                            'Jasa Keuangan dan Asuransi',
-                                            'Real Estat',
-                                            'Jasa Perusahaan',
-                                            'Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib',
-                                            'Jasa Pendidikan',
-                                            'Jasa Kesehatan dan Kegiatan Sosial',
-                                            'Jasa lainnya',
-                                            'Produk Domestik Regional Bruto'
-                        ],
+                                           'Pertambangan dan Penggalian',
+                                           'Industri Pengolahan',
+                                           'Pengadaan Listrik dan Gas',
+                                           'Pengadaan Air, Pengelolaan Sampah, Limbah dan Daur Ulang',
+                                           'Konstruksi',
+                                           'Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor',
+                                           'Transportasi dan Pergudangan',
+                                           'Penyediaan Akomodasi dan Makan Minum',
+                                           'Informasi dan Komunikasi',
+                                           'Jasa Keuangan dan Asuransi',
+                                           'Real Estat',
+                                           'Jasa Perusahaan',
+                                           'Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib',
+                                           'Jasa Pendidikan',
+                                           'Jasa Kesehatan dan Kegiatan Sosial',
+                                           'Jasa lainnya',
+                                           'Produk Domestik Regional Bruto'
+                                           ],
                         '2019': [-1.54, 0, 3.03, 6.24, 4.87, 5.78, 5.88, 7.78, 7.78, 7.09, 4.45, 4.04, 5.37, 4.27, 6.15, 5.99, 5.84, 5.65],
                         '2020': [8.16, 0, -3.55, -0.33, 4.39, -6.26, -9.2, -6.43, -8.16, 7.87, 0.02, 3.27, -7.24, -2.42, 2.88, 3.82, -14.5, -3.69],
                         '2021': [-2.41, 0, 2.98, 2.56, 6.17, 0.86, 6.54, 5.91, 1.45, 5.6, 0.51, 0.25, 0.87, -0.2, 0.31, 3.94, 3.71, 3.65],
@@ -832,14 +883,17 @@ if data_type in data_files:
 
                 # Mengubah data menjadi persentase (menambahkan simbol % pada setiap nilai)
                     for col in df_percentage.columns[1:]:
-                        df_percentage[col] = df_percentage[col].apply(lambda x: f"{abs(x):.2f}".rstrip('0').rstrip('.') + '%')
+                        df_percentage[col] = df_percentage[col].apply(
+                            lambda x: f"{abs(x):.2f}".rstrip('0').rstrip('.') + '%')
 
                 # Menampilkan tabel baru dengan format yang lebih mudah dipahami
-                    st.markdown("### Tabel Laju Pertumbuhan PDRB (Dengan Simbol %)")
+                    st.markdown(
+                        "### Tabel Laju Pertumbuhan PDRB (Dengan Simbol %)")
                     st.dataframe(df_percentage)
 
                 # Untuk visualisasi, kita tetap menggunakan data asli tanpa simbol % agar grafik bisa di-render dengan benar
-                    df_melted = df.melt(id_vars=['Lapangan Usaha'], var_name='Tahun', value_name='Laju Pertumbuhan')
+                    df_melted = df.melt(
+                        id_vars=['Lapangan Usaha'], var_name='Tahun', value_name='Laju Pertumbuhan')
 
                 # Membuat stacked line chart
                     fig = go.Figure()
@@ -848,9 +902,9 @@ if data_type in data_files:
                     for industry in df_melted['Lapangan Usaha'].unique():
                         industry_data = df_melted[df_melted['Lapangan Usaha'] == industry]
                         fig.add_trace(go.Scatter(
-                            x=industry_data['Tahun'], 
-                            y=industry_data['Laju Pertumbuhan'], 
-                            mode='lines+markers', 
+                            x=industry_data['Tahun'],
+                            y=industry_data['Laju Pertumbuhan'],
+                            mode='lines+markers',
                             name=industry
                         ))
 
@@ -866,9 +920,9 @@ if data_type in data_files:
                 # Menampilkan visualisasi di Streamlit
                     st.plotly_chart(fig)
 
-
                 elif selected_data_title == 'Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023' and visual_type == "Stacked Bar Chart":
-                    st.markdown("### Stacked Bar Chart Distribusi Data Kependudukan Kota Mojokerto per Kecamatan, 2023")
+                    st.markdown(
+                        "### Stacked Bar Chart Distribusi Data Kependudukan Kota Mojokerto per Kecamatan, 2023")
 
                 # Data per Kecamatan
                     data_kecamatan = {
@@ -894,7 +948,8 @@ if data_type in data_files:
                     fig_kecamatan = px.bar(
                         df_kecamatan,
                         x='Kecamatan',
-                        y=['Penduduk', 'Persentase Penduduk', 'Kepadatan Penduduk per km2', 'Rasio Jenis Kelamin Penduduk'],
+                        y=['Penduduk', 'Persentase Penduduk',
+                            'Kepadatan Penduduk per km2', 'Rasio Jenis Kelamin Penduduk'],
                         title='Distribusi Data Kependudukan Kota Mojokerto per Kecamatan, 2023',
                         labels={'value': 'Jumlah', 'variable': 'Kategori'},
                         barmode='stack'
@@ -907,7 +962,8 @@ if data_type in data_files:
                     fig_total = px.bar(
                         df_total,
                         x='Kecamatan',
-                        y=['Penduduk', 'Persentase Penduduk', 'Kepadatan Penduduk per km2', 'Rasio Jenis Kelamin Penduduk'],
+                        y=['Penduduk', 'Persentase Penduduk',
+                            'Kepadatan Penduduk per km2', 'Rasio Jenis Kelamin Penduduk'],
                         title='Total Data Kependudukan Kota Mojokerto, 2023',
                         labels={'value': 'Jumlah', 'variable': 'Kategori'},
                         barmode='stack'
@@ -917,7 +973,8 @@ if data_type in data_files:
                     st.plotly_chart(fig_total, use_container_width=True)
 
                 elif selected_data_title == 'Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023' and visual_type == "Bar Chart":
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
 
                 # Membuat DataFrame awal dengan data yang sudah ada
                     data = {
@@ -956,10 +1013,11 @@ if data_type in data_files:
                 # Fungsi untuk membuat bar chart
                     def create_bar_chart(data, title):
                         chart = alt.Chart(data).mark_bar().encode(
-                        x=alt.X('Nama', sort='-y', title='Nama'),
-                        y=alt.Y('Jumlah', title='Jumlah Penduduk'),
-                        color=alt.Color('Nama', legend=None),
-                        tooltip=['Nama', 'Laki-Laki', 'Perempuan', 'Jumlah', 'Presentase']
+                            x=alt.X('Nama', sort='-y', title='Nama'),
+                            y=alt.Y('Jumlah', title='Jumlah Penduduk'),
+                            color=alt.Color('Nama', legend=None),
+                            tooltip=['Nama', 'Laki-Laki',
+                                     'Perempuan', 'Jumlah', 'Presentase']
                         ).properties(
                             title=title,
                             width=600,
@@ -968,31 +1026,34 @@ if data_type in data_files:
                         return chart
 
                 # Menampilkan bar chart untuk setiap tabel
-                    st.altair_chart(create_bar_chart(df_kecamatan, "Jumlah Penduduk per Kecamatan"), use_container_width=True)
-                    st.altair_chart(create_bar_chart(df_kelurahan, "Jumlah Penduduk per Kelurahan"), use_container_width=True)
-                    st.altair_chart(create_bar_chart(df_kota, "Jumlah Penduduk Kota Mojokerto"), use_container_width=True)  
+                    st.altair_chart(create_bar_chart(
+                        df_kecamatan, "Jumlah Penduduk per Kecamatan"), use_container_width=True)
+                    st.altair_chart(create_bar_chart(
+                        df_kelurahan, "Jumlah Penduduk per Kelurahan"), use_container_width=True)
+                    st.altair_chart(create_bar_chart(
+                        df_kota, "Jumlah Penduduk Kota Mojokerto"), use_container_width=True)
 
                 elif selected_data_title == 'Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023' and visual_type == "Bar Chart":
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
 
                 # Data Penduduk akhir tahun Warga Negara Asing
                     data = {
                         'Kecamatan': [
-                                    'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon',
-                                    'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari',
-                                    'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kota Mojokerto'
+                            'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon',
+                            'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari',
+                            'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kota Mojokerto'
                         ],
                         'Kelurahan': [
-                                    'Surodinawan', 'Prajurit Kulon', 'Blooto', 'Mentikan', 'Kauman', 'Pulorejo',
-                                    'Gunung Gedangan', 'Kedundung', 'Balongsari', 'Gedongan', 'Magersari', 'Wates',
-                                    'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah', None
+                            'Surodinawan', 'Prajurit Kulon', 'Blooto', 'Mentikan', 'Kauman', 'Pulorejo',
+                            'Gunung Gedangan', 'Kedundung', 'Balongsari', 'Gedongan', 'Magersari', 'Wates',
+                            'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah', None
                         ],
                         'Laki-Laki': [1, None, None, None, 1, None, 33, None, None, 28, None, 1, 4, None, None, None, None, None, 34],
                         'Perempuan': [1, None, None, None, None, 1, 0, None, None, None, None, None, None, None, None, None, None, None, 1],
                         'Jumlah': [2, None, None, None, 1, 1, 33, None, None, 28, None, 1, 4, None, None, None, None, None, 35],
                         'Persentase': [5.71, None, None, 2.86, 2.86, None, 94.29, None, None, 80, None, 2.86, 11.43, None, None, None, None, None, 100]
                     }
-
 
                 # Membuat DataFrame
                     df = pd.DataFrame(data)
@@ -1001,32 +1062,33 @@ if data_type in data_files:
                     df.fillna("Tidak Ada", inplace=True)
 
                 # Menambah simbol % di kolom Persentase
-                    df['Persentase'] = df['Persentase'].apply(lambda x: f"{x}%" if pd.notnull(x) and x != "Tidak Ada" else x)
+                    df['Persentase'] = df['Persentase'].apply(
+                        lambda x: f"{x}%" if pd.notnull(x) and x != "Tidak Ada" else x)
 
-                
                 # Menampilkan tabel baru dengan format yang lebih mudah dipahami
                     st.write("### Tabel Dengan Format yang Lebih Mudah Dipahami")
                     st.table(df)
 
                 # Visualisasi Bar Chart untuk Jumlah Warga Negara Asing berdasarkan Kecamatan
-                    fig = px.bar(df, x='Kecamatan', y=['Laki-Laki', 'Perempuan'], title='Distribusi Warga Negara Asing di Kota Mojokerto', labels={'value':'Jumlah', 'variable':'Jenis Kelamin'}, barmode='stack')
+                    fig = px.bar(df, x='Kecamatan', y=['Laki-Laki', 'Perempuan'], title='Distribusi Warga Negara Asing di Kota Mojokerto', labels={
+                                 'value': 'Jumlah', 'variable': 'Jenis Kelamin'}, barmode='stack')
 
                 # Menampilkan bar chart di Streamlit
                     st.plotly_chart(fig)
 
                 elif selected_data_title == 'Jumlah Kelahiran menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023' and visual_type == "Bar Chart":
-                
-                # Data Jumlah Kelahiran
+
+                    # Data Jumlah Kelahiran
                     data = {
                         'Kecamatan': [
-                                    'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon',
-                                    'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari',
-                                    'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', None
+                            'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon',
+                            'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari', 'Magersari',
+                            'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', 'Kranggan', None
                         ],
                         'Kelurahan': [
-                                    'Surodinawan', 'Prajurit Kulon', 'Blooto', 'Mentikan', 'Kauman', 'Pulorejo',
-                                    'Gunung Gedangan', 'Kedundung', 'Balongsari', 'Gedongan', 'Magersari', 'Wates',
-                                    'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah', 'Kota Mojokerto'
+                            'Surodinawan', 'Prajurit Kulon', 'Blooto', 'Mentikan', 'Kauman', 'Pulorejo',
+                            'Gunung Gedangan', 'Kedundung', 'Balongsari', 'Gedongan', 'Magersari', 'Wates',
+                            'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah', 'Kota Mojokerto'
                         ],
                         'Laki-Laki': [327, 81, 56, 51, 45, 23, 71, 406, 69, 98, 48, 11, 34, 146, 229, 76, 51, 25, 962],
                         'Perempuan': [323, 74, 57, 51, 49, 19, 73, 346, 63, 104, 32, 9, 29, 109, 234, 89, 57, 22, 903],
@@ -1038,7 +1100,8 @@ if data_type in data_files:
                     df = pd.DataFrame(data)
 
                 # Format kolom 'Persentase' dengan simbol %
-                    df['Persentase'] = df['Persentase'].apply(lambda x: f"{x}%" if pd.notnull(x) else "<NA>")
+                    df['Persentase'] = df['Persentase'].apply(
+                        lambda x: f"{x}%" if pd.notnull(x) else "<NA>")
 
                 # Tampilkan tabel dengan format yang lebih mudah dipahami
                     st.write("### Tabel dengan format yang lebih mudah dipahami")
@@ -1046,21 +1109,23 @@ if data_type in data_files:
 
                 # Visualisasi bar chart interaktif
                     st.write("### Visualisasi Jumlah Kelahiran di Kota Mojokerto")
-                    fig = px.bar(df, 
-                            x='Kelurahan', 
-                            y='Jumlah', 
-                            color='Kecamatan', 
-                            labels={'Jumlah': 'Jumlah Kelahiran', 'Kelurahan': 'Nama Kelurahan'},
-                            title='Jumlah Kelahiran di Setiap Kelurahan dan Kecamatan di Kota Mojokerto')
+                    fig = px.bar(df,
+                                 x='Kelurahan',
+                                 y='Jumlah',
+                                 color='Kecamatan',
+                                 labels={'Jumlah': 'Jumlah Kelahiran',
+                                         'Kelurahan': 'Nama Kelurahan'},
+                                 title='Jumlah Kelahiran di Setiap Kelurahan dan Kecamatan di Kota Mojokerto')
 
                 # Tampilkan bar chart
                     st.plotly_chart(fig)
 
                 elif selected_data_title == 'Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
 
-                # Data Jumlah Kematian 
+                # Data Jumlah Kematian
                     data = {
                         'Kecamatan': [
                             'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon', 'Prajurit Kulon',
@@ -1085,22 +1150,25 @@ if data_type in data_files:
                     df.fillna("Tidak Ada", inplace=True)
 
                 # Tambah simbol % pada kolom Persentase
-                    df['Persentase'] = df['Persentase'].apply(lambda x: f"{x}%" if pd.notnull(x) and x != "Tidak Ada" else x)
+                    df['Persentase'] = df['Persentase'].apply(
+                        lambda x: f"{x}%" if pd.notnull(x) and x != "Tidak Ada" else x)
 
                 # Tampilkan tabel di Streamlit
                     st.write("###")
                     st.table(df)
 
                 # Visualisasi Bar Chart interaktif dengan Plotly
-                    st.write("### Visualisasi Jumlah Kematian Berdasarkan Jenis Kelamin")
+                    st.write(
+                        "### Visualisasi Jumlah Kematian Berdasarkan Jenis Kelamin")
 
                 # Membuat stacked bar chart
                     fig = px.bar(
-                        df, 
-                        x='Kelurahan', 
-                        y=['Laki-Laki', 'Perempuan'], 
+                        df,
+                        x='Kelurahan',
+                        y=['Laki-Laki', 'Perempuan'],
                         title="Jumlah Kematian Berdasarkan Kelurahan dan Jenis Kelamin",
-                        labels={'value': 'Jumlah Kematian', 'Kelurahan': 'Nama Kelurahan'},
+                        labels={'value': 'Jumlah Kematian',
+                                'Kelurahan': 'Nama Kelurahan'},
                         height=500,
                         width=800
                     )
@@ -1110,7 +1178,8 @@ if data_type in data_files:
 
                 elif selected_data_title == 'Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
 
                 # Data Jumlah Penduduk Datang
                     data_asli = {
@@ -1126,45 +1195,46 @@ if data_type in data_files:
                             'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah', None
                         ],
                         'Laki-Laki': [
-                            97, 64, 48, 71, 18, 63, 
-                            89, 134, 57, 13, 66, 192, 
+                            97, 64, 48, 71, 18, 63,
+                            89, 134, 57, 13, 66, 192,
                             139, 106, 21, 60, 13, 23, 1274  # Total Kota Mojokerto
                         ],
                         'Perempuan': [
-                            114, 67, 34, 69, 22, 81, 
-                            83, 133, 65, 13, 80, 191, 
+                            114, 67, 34, 69, 22, 81,
+                            83, 133, 65, 13, 80, 191,
                             114, 78, 17, 78, 12, 19, 1270  # Total Kota Mojokerto
                         ],
                         'Jumlah': [
-                            211, 131, 82, 140, 40, 144, 
-                            172, 267, 122, 26, 146, 383, 
+                            211, 131, 82, 140, 40, 144,
+                            172, 267, 122, 26, 146, 383,
                             253, 184, 38, 138, 25, 42, 2544  # Total Kota Mojokerto
                         ],
                         'Persentase': [
-                            8.29, 5.15, 3.22, 5.5, 1.57, 5.66, 
-                            6.76, 10.5, 4.8, 1.02, 5.74, 15.06, 
+                            8.29, 5.15, 3.22, 5.5, 1.57, 5.66,
+                            6.76, 10.5, 4.8, 1.02, 5.74, 15.06,
                             9.94, 7.23, 1.49, 5.42, 0.98, 1.65,
                             100  # Persentase Kota Mojokerto
                         ]
                     }
-                
+
                 # Membuat DataFrame
                     df = pd.DataFrame(data_asli)
 
                 # Mengubah kolom 'Persentase' menjadi format string dengan simbol %
-                    df['Persentase'] = df['Persentase'].apply(lambda x: f'{x}%')
-
+                    df['Persentase'] = df['Persentase'].apply(
+                        lambda x: f'{x}%')
 
                 # Atau bisa juga menggunakan st.dataframe jika ingin tabelnya lebih interaktif
                     st.dataframe(df)
 
                 # Membuat stacked bar chart interaktif
                     fig = px.bar(
-                        df, 
-                        x='Kecamatan', 
-                        y=['Laki-Laki', 'Perempuan'], 
+                        df,
+                        x='Kecamatan',
+                        y=['Laki-Laki', 'Perempuan'],
                         title='Jumlah Penduduk Datang Menurut Kecamatan di Kota Mojokerto (Laki-Laki dan Perempuan)',
-                        labels={'value': 'Jumlah Penduduk', 'variable': 'Jenis Kelamin'},
+                        labels={'value': 'Jumlah Penduduk',
+                                'variable': 'Jenis Kelamin'},
                         barmode='stack',
                         text_auto=True
                     )
@@ -1174,7 +1244,8 @@ if data_type in data_files:
 
                 elif selected_data_title == 'Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023")
 
                 # Data Jumlah Penduduk Keluar
                     data_asli = {
@@ -1219,19 +1290,20 @@ if data_type in data_files:
                     df = pd.DataFrame(data_asli)
 
                 # Mengubah kolom 'Persentase' menjadi format string dengan simbol %
-                    df['Persentase'] = df['Persentase'].apply(lambda x: f'{x}%')
-
+                    df['Persentase'] = df['Persentase'].apply(
+                        lambda x: f'{x}%')
 
                 # Atau bisa juga menggunakan st.dataframe jika ingin tabelnya lebih interaktif
                     st.dataframe(df)
 
                 # Membuat stacked bar chart interaktif
                     fig = px.bar(
-                        df, 
-                        x='Kecamatan', 
-                        y=['Laki-Laki', 'Perempuan'], 
+                        df,
+                        x='Kecamatan',
+                        y=['Laki-Laki', 'Perempuan'],
                         title='Jumlah Penduduk Keluar Menurut Kecamatan di Kota Mojokerto (Laki-Laki dan Perempuan)',
-                        labels={'value': 'Jumlah Penduduk', 'variable': 'Jenis Kelamin'},
+                        labels={'value': 'Jumlah Penduduk',
+                                'variable': 'Jenis Kelamin'},
                         barmode='stack',
                         text_auto=True
                     )
@@ -1241,13 +1313,14 @@ if data_type in data_files:
 
                 elif selected_data_title == 'Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto, 2023' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto, 2023")
 
                 # Data akte kependudukan diterbitkan per bulan
                     data_akte = {
                         'Bulan': ['Januari'] * 5 + ['Februari'] * 5 + ['Maret'] * 5 + ['April'] * 5 + ['Mei'] * 5 +
-                                ['Juni'] * 5 + ['Juli'] * 5 + ['Agustus'] * 5 + ['September'] * 5 + ['Oktober'] * 5 +
-                                ['November'] * 5 + ['Desember'] * 5,
+                        ['Juni'] * 5 + ['Juli'] * 5 + ['Agustus'] * 5 + ['September'] * 5 + ['Oktober'] * 5 +
+                        ['November'] * 5 + ['Desember'] * 5,
                         'Jenis': ['Kelahiran Umum', 'Kelahiran Dispensasi', 'Perkawinan', 'Perceraian', 'Kematian'] * 12,
                         'Jumlah': [
                             352, 52, 3, 0, 96,
@@ -1268,10 +1341,10 @@ if data_type in data_files:
                 # Menghitung total per jenis
                     total_data = {
                         'Jenis': [
-                            'Total Kelahiran Umum', 
-                            'Total Kelahiran Dispensasi', 
-                            'Total Perkawinan', 
-                            'Total Perceraian', 
+                            'Total Kelahiran Umum',
+                            'Total Kelahiran Dispensasi',
+                            'Total Perkawinan',
+                            'Total Perceraian',
                             'Total Kematian'
                         ],
                         'Jumlah': [
@@ -1284,29 +1357,35 @@ if data_type in data_files:
                     df_total = pd.DataFrame(total_data)
 
                 # Menghitung total per bulan untuk visualisasi
-                    df_total_per_bulan = df_akte.groupby(['Bulan', 'Jenis']).sum().reset_index()
+                    df_total_per_bulan = df_akte.groupby(
+                        ['Bulan', 'Jenis']).sum().reset_index()
 
                 # Menampilkan tabel di Streamlit
-                    st.write("Tabel Banyaknya Akte Kependudukan Diterbitkan Menurut Jenisnya di Kota Mojokerto, 2023")
+                    st.write(
+                        "Tabel Banyaknya Akte Kependudukan Diterbitkan Menurut Jenisnya di Kota Mojokerto, 2023")
                     st.dataframe(df_akte)
 
                     st.write("Total Banyaknya Akte Kependudukan Diterbitkan")
                     st.dataframe(df_total)
 
                 # Visualisasi Line Chart Interaktif dengan Plotly
-                    st.write("Visualisasi Line Chart Banyaknya Akte Kependudukan Diterbitkan per Bulan")
-                    line_chart_data = df_total_per_bulan.pivot(index='Bulan', columns='Jenis', values='Jumlah').reset_index()
-                    
+                    st.write(
+                        "Visualisasi Line Chart Banyaknya Akte Kependudukan Diterbitkan per Bulan")
+                    line_chart_data = df_total_per_bulan.pivot(
+                        index='Bulan', columns='Jenis', values='Jumlah').reset_index()
+
                 # Menggunakan Plotly untuk membuat line chart
-                    fig = px.line(line_chart_data, x='Bulan', y=line_chart_data.columns[1:], 
-                                labels={'value': 'Jumlah', 'variable': 'Jenis'},
-                                title='Banyaknya Akte Kependudukan Diterbitkan per Bulan di Kota Mojokerto, 2023')
+                    fig = px.line(line_chart_data, x='Bulan', y=line_chart_data.columns[1:],
+                                  labels={'value': 'Jumlah',
+                                          'variable': 'Jenis'},
+                                  title='Banyaknya Akte Kependudukan Diterbitkan per Bulan di Kota Mojokerto, 2023')
 
                     st.plotly_chart(fig)
 
                 elif selected_data_title == 'Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto, 2023' and visual_type == "Heatmap":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto, 2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto, 2023")
 
                 # Data Kepadatan Penduduk
                     data_kepadatan = {
@@ -1319,7 +1398,7 @@ if data_type in data_files:
                         'Kelurahan': [
                             'Surodinawan', 'Prajurit Kulon', 'Blooto', 'Mentikan', 'Kauman', 'Pulorejo',
                             'Gunung Gedangan', 'Kedundung', 'Balongsari', 'Gedongan', 'Magersari', 'Wates',
-                            'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah', 
+                            'Kranggan', 'Meri', 'Jagalan', 'Miji', 'Sentanan', 'Purwotengah',
                             'Kota Mojokerto (Total)'
                         ],
                         'Kepadatan Penduduk (per Km2)': [
@@ -1338,16 +1417,20 @@ if data_type in data_files:
                     df_kepadatan_format_baru = df_kepadatan.copy()
 
                 # Memisahkan kolom 'Kecamatan', 'Kelurahan', dan 'Kota Mojokerto'
-                    df_kepadatan_format_baru['Kecamatan'] = df_kepadatan_format_baru['Kecamatan'].replace({'Kota Mojokerto': ''})
+                    df_kepadatan_format_baru['Kecamatan'] = df_kepadatan_format_baru['Kecamatan'].replace({
+                                                                                                          'Kota Mojokerto': ''})
                     st.dataframe(df_kepadatan_format_baru)
 
                 # Menampilkan Heatmap Interaktif dengan Plotly
-                    st.write("### Visualisasi Heatmap Kepadatan Penduduk per Km2 di Kota Mojokerto")
-                    heatmap_data = df_kepadatan_format_baru.pivot(index='Kelurahan', columns='Kecamatan', values='Kepadatan Penduduk (per Km2)')
+                    st.write(
+                        "### Visualisasi Heatmap Kepadatan Penduduk per Km2 di Kota Mojokerto")
+                    heatmap_data = df_kepadatan_format_baru.pivot(
+                        index='Kelurahan', columns='Kecamatan', values='Kepadatan Penduduk (per Km2)')
 
                 # Menggunakan Plotly untuk membuat heatmap
-                    fig = px.imshow(heatmap_data, 
-                                    labels=dict(x="Kecamatan", y="Kelurahan", color="Kepadatan Penduduk per Km2"),
+                    fig = px.imshow(heatmap_data,
+                                    labels=dict(
+                                        x="Kecamatan", y="Kelurahan", color="Kepadatan Penduduk per Km2"),
                                     title="Heatmap Kepadatan Penduduk per Km2 di Kota Mojokerto, 2023",
                                     color_continuous_scale="Viridis")
 
@@ -1356,7 +1439,8 @@ if data_type in data_files:
 
                 elif selected_data_title == 'Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023")
 
                 # Data pengeluaran per kapita riil disesuaikan (ribu rupiah) untuk semua kabupaten dan kota di Jawa Timur
                     data = {
@@ -1371,7 +1455,7 @@ if data_type in data_files:
                         'Kabupaten Lumajang': [11123, 10712, 10354, 9932, 9523, 9087, 8654, 8276, 7987, 7621, 7310, 7012, 6678, 6321],
                         'Kabupaten Jember': [12543, 12054, 11576, 11123, 10565, 10012, 9532, 9087, 8712, 8321, 7985, 7623, 7254, 6898],
                         'Kabupaten Banyuwangi': [13245, 12689, 12123, 11576, 10932, 10321, 9721, 9243, 8912, 8512, 8156, 7790, 7412, 7012],
-                        'Kabupaten Bondowoso' :	[11255,	10851,	10690,	10610,	10665,	10429,	10086,	10007,	9518.93,	9176.22,	9138.26,	8855.86,	8418.39,	8064.31],
+                        'Kabupaten Bondowoso':	[11255,	10851,	10690,	10610,	10665,	10429,	10086,	10007,	9518.93,	9176.22,	9138.26,	8855.86,	8418.39,	8064.31],
                         'Kabupaten Situbondo': [10702, 10263, 9996, 9857, 10097, 9692, 9178, 9106, 8676.63, 8382.83, 8350.9, 8173.88, 7812.23, 7441.67],
                         'Kabupaten Probolinggo': [11756, 11254, 10969, 10859, 10972, 10700, 10239, 10170, 9976.33, 9876.57, 9847.45, 9721.2, 9358.52, 9004.01],
                         'Kabupaten Pasuruan': [11239, 10726, 10297, 10164, 10381, 9933, 9556, 9198, 8706.84, 8293.33, 8261.03, 8074.97, 7660.82, 7342.6],
@@ -1386,7 +1470,7 @@ if data_type in data_files:
                         'Kabupaten Tuban': [11174, 10703, 10380, 10238, 10499, 10048, 9540, 9353, 8940.49, 8906.12, 8871.88, 8705.73, 8331.81, 7897.68],
                         'Kabupaten Lamongan': [12019, 11648, 11510, 11456, 11572, 11108, 10664, 10252, 9821.5, 9544.78, 9511.33, 9385.63, 8965.78, 8552.94],
                         'Kabupaten Gresik': [13870,	13384,	13280,	13246,	13295,	12845,	12375,	11961,	11548.08,	11513.82,	11479.66,	11359.96,	10926.01,	10490.66],
-                        'Kabupaten Bangkalan': [9438,	8971,	8673,	8610,	8718,	8393,	8192	,8030,	7667.19,	7458.74,	7433.51,	7315.93,	7006.22,	6708.78],
+                        'Kabupaten Bangkalan': [9438,	8971,	8673,	8610,	8718,	8393,	8192, 8030,	7667.19,	7458.74,	7433.51,	7315.93,	7006.22,	6708.78],
                         'Kabupaten Sampang': [9363,	8944,	8790,	8739,	8760,	8569,	8352,	8096,	7826.56,	7797.85,	7769.25,	7691.64,	7336.64,	6952.48],
                         'Kabupaten Pamekasan': [9420,	8967,	8804, 8739,	8834,	8536,	8311,	7975,	7678.96,	7477.62,	7445.21,	7260.28,	6921.79,	6531.72],
                         'Kabupaten Sumenep': [9807,	9388,	9000,	8888,	9082,	8722,	8316,	7846,	7577.27,	7143.08, 7092.74,	6834,	6523.8,	5745.99],
@@ -1403,86 +1487,100 @@ if data_type in data_files:
                     }
                 # Membuat dataframe dari data
                     df = pd.DataFrame(data)
-                    df['Tahun'] = df['Tahun'].astype(str)  # Convert years to strings for display
+                    # Convert years to strings for display
+                    df['Tahun'] = df['Tahun'].astype(str)
 
                 # Memformat tabel baru untuk lebih mudah dibaca
                 # Membuat tabel baru terpisah sesuai kelompok wilayah Kabupaten dan Kota
-                    kabupaten_df = df[['Tahun', 
-                                    'Kabupaten Pacitan', 
-                                    'Kabupaten Ponorogo', 
-                                        'Kabupaten Trenggalek', 
-                                        'Kabupaten Tulungagung',
-                                        'Kabupaten Blitar',
-                                        'Kabupaten Kediri',
-                                        'Kabupaten Malang',
-                                        'Kabupaten Lumajang',
-                                        'Kabupaten Jember',
-                                        'Kabupaten Banyuwangi',
-                                        'Kabupaten Bondowoso',
-                                        'Kabupaten Situbondo',
-                                        'Kabupaten Probolinggo',
-                                        'Kabupaten Pasuruan',
-                                        'Kabupaten Sidoarjo',
-                                        'Kabupaten Mojokerto',
-                                        'Kabupaten Jombang',
-                                        'Kabupaten Nganjuk',
-                                        'Kabupaten Madiun',
-                                        'Kabupaten Magetan',
-                                        'Kabupaten Ngawi',
-                                        'Kabupaten Bojonegoro',
-                                        'Kabupaten Tuban',
-                                        'Kabupaten Lamongan',
-                                        'Kabupaten Gresik',
-                                        'Kabupaten Bangkalan',
-                                        'Kabupaten Sampang',
-                                        'Kabupaten Pamekasan',
-                                        'Kabupaten Sumenep']]
-                    kota_df = df[['Tahun', 
-                                    'Kota Kediri',
-                                    'Kota Blitar',
-                                    'Kota Malang',
-                                    'Kota Probolinggo',
-                                    'Kota Pasuruan',
-                                    'Kota Mojokerto',
-                                    'Kota Surabaya',
-                                    'Kota Batu']]
+                    kabupaten_df = df[['Tahun',
+                                       'Kabupaten Pacitan',
+                                       'Kabupaten Ponorogo',
+                                       'Kabupaten Trenggalek',
+                                       'Kabupaten Tulungagung',
+                                       'Kabupaten Blitar',
+                                       'Kabupaten Kediri',
+                                       'Kabupaten Malang',
+                                       'Kabupaten Lumajang',
+                                       'Kabupaten Jember',
+                                       'Kabupaten Banyuwangi',
+                                       'Kabupaten Bondowoso',
+                                       'Kabupaten Situbondo',
+                                       'Kabupaten Probolinggo',
+                                       'Kabupaten Pasuruan',
+                                       'Kabupaten Sidoarjo',
+                                       'Kabupaten Mojokerto',
+                                       'Kabupaten Jombang',
+                                       'Kabupaten Nganjuk',
+                                       'Kabupaten Madiun',
+                                       'Kabupaten Magetan',
+                                       'Kabupaten Ngawi',
+                                       'Kabupaten Bojonegoro',
+                                       'Kabupaten Tuban',
+                                       'Kabupaten Lamongan',
+                                       'Kabupaten Gresik',
+                                       'Kabupaten Bangkalan',
+                                       'Kabupaten Sampang',
+                                       'Kabupaten Pamekasan',
+                                       'Kabupaten Sumenep']]
+                    kota_df = df[['Tahun',
+                                  'Kota Kediri',
+                                  'Kota Blitar',
+                                  'Kota Malang',
+                                  'Kota Probolinggo',
+                                  'Kota Pasuruan',
+                                  'Kota Mojokerto',
+                                  'Kota Surabaya',
+                                  'Kota Batu']]
                     total_df = df[['Tahun', 'Jawa Timur']]
 
                 # Menampilkan tabel Kabupaten secara urut berdasarkan tahun
-                    st.subheader('Tabel Pengeluaran Per Kapita Kabupaten (2023-2010)')
+                    st.subheader(
+                        'Tabel Pengeluaran Per Kapita Kabupaten (2023-2010)')
                     st.dataframe(kabupaten_df)
 
                 # Menampilkan tabel Kota secara urut berdasarkan tahun
-                    st.subheader('Tabel Pengeluaran Per Kapita Kota (2023-2010)')
+                    st.subheader(
+                        'Tabel Pengeluaran Per Kapita Kota (2023-2010)')
                     st.dataframe(kota_df)
 
                 # Menampilkan tabel total Jawa Timur
-                    st.subheader('Tabel Pengeluaran Per Kapita Jawa Timur (Total Kabupaten + Kota)')
+                    st.subheader(
+                        'Tabel Pengeluaran Per Kapita Jawa Timur (Total Kabupaten + Kota)')
                     st.dataframe(total_df)
 
                 # Create a line chart for districts (Kabupaten)
-                    districts = df.columns[1:24]  # Adjust index based on your data
-                    df_districts = df.melt(id_vars='Tahun', value_vars=districts, var_name='Kabupaten', value_name='Pengeluaran')
+                    # Adjust index based on your data
+                    districts = df.columns[1:24]
+                    df_districts = df.melt(
+                        id_vars='Tahun', value_vars=districts, var_name='Kabupaten', value_name='Pengeluaran')
 
                 # Plotting Districts Line Chart
-                    st.subheader("Pengeluaran Per Kapita Riil Disesuaikan - Kabupaten")
-                    fig_districts = px.line(df_districts, x='Tahun', y='Pengeluaran', color='Kabupaten', title='Pengeluaran Per Kapita Riil Disesuaikan (Kabupaten) 2010-2023')
-                    fig_districts.update_layout(xaxis_title='Tahun', yaxis_title='Pengeluaran (Ribu Rupiah)')
+                    st.subheader(
+                        "Pengeluaran Per Kapita Riil Disesuaikan - Kabupaten")
+                    fig_districts = px.line(df_districts, x='Tahun', y='Pengeluaran', color='Kabupaten',
+                                            title='Pengeluaran Per Kapita Riil Disesuaikan (Kabupaten) 2010-2023')
+                    fig_districts.update_layout(
+                        xaxis_title='Tahun', yaxis_title='Pengeluaran (Ribu Rupiah)')
                     st.plotly_chart(fig_districts)
 
                 # Create a line chart for cities (Kota)
                     cities = df.columns[24:]  # Adjust index based on your data
-                    df_cities = df.melt(id_vars='Tahun', value_vars=cities, var_name='Kota', value_name='Pengeluaran')
+                    df_cities = df.melt(
+                        id_vars='Tahun', value_vars=cities, var_name='Kota', value_name='Pengeluaran')
 
                 # Plotting Cities Line Chart
-                    st.subheader("Pengeluaran Per Kapita Riil Disesuaikan - Kota")
-                    fig_cities = px.line(df_cities, x='Tahun', y='Pengeluaran', color='Kota', title='Pengeluaran Per Kapita Riil Disesuaikan (Kota) 2010-2023')
-                    fig_cities.update_layout(xaxis_title='Tahun', yaxis_title='Pengeluaran (Ribu Rupiah)')
+                    st.subheader(
+                        "Pengeluaran Per Kapita Riil Disesuaikan - Kota")
+                    fig_cities = px.line(df_cities, x='Tahun', y='Pengeluaran', color='Kota',
+                                         title='Pengeluaran Per Kapita Riil Disesuaikan (Kota) 2010-2023')
+                    fig_cities.update_layout(
+                        xaxis_title='Tahun', yaxis_title='Pengeluaran (Ribu Rupiah)')
                     st.plotly_chart(fig_cities)
 
                 elif selected_data_title == 'Harapan Lama Sekolah (HLS) 2010-2023' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Harapan Lama Sekolah (HLS) 2010-2023")
+                    st.markdown(
+                        "### Susunan Tabel Baru & Visualisasi Harapan Lama Sekolah (HLS) 2010-2023")
 
                 # Data pengeluaran Harapan Lama Sekolah (HLS) 2010-2023 untuk semua kabupaten dan kota di Jawa Timur
                     data = {
@@ -1529,697 +1627,707 @@ if data_type in data_files:
                     }
                 # Membuat dataframe dari data
                     df = pd.DataFrame(data)
-                    df['Tahun'] = df['Tahun'].astype(str)  # Convert years to strings for display
+                    # Convert years to strings for display
+                    df['Tahun'] = df['Tahun'].astype(str)
 
                 # Memformat tabel baru untuk lebih mudah dibaca
                 # Membuat tabel baru terpisah sesuai kelompok wilayah Kabupaten dan Kota
-                    kabupaten_df = df[['Tahun', 
-                                    'Kabupaten Pacitan', 
-                                    'Kabupaten Ponorogo', 
-                                        'Kabupaten Trenggalek', 
-                                        'Kabupaten Tulungagung',
-                                        'Kabupaten Blitar',
-                                        'Kabupaten Kediri',
-                                        'Kabupaten Malang',
-                                        'Kabupaten Lumajang',
-                                        'Kabupaten Jember',
-                                        'Kabupaten Banyuwangi',
-                                        'Kabupaten Bondowoso',
-                                        'Kabupaten Situbondo',
-                                        'Kabupaten Probolinggo',
-                                        'Kabupaten Pasuruan',
-                                        'Kabupaten Sidoarjo',
-                                        'Kabupaten Mojokerto',
-                                        'Kabupaten Jombang',
-                                        'Kabupaten Nganjuk',
-                                        'Kabupaten Madiun',
-                                        'Kabupaten Magetan',
-                                        'Kabupaten Ngawi',
-                                        'Kabupaten Bojonegoro',
-                                        'Kabupaten Tuban',
-                                        'Kabupaten Lamongan',
-                                        'Kabupaten Gresik',
-                                        'Kabupaten Bangkalan',
-                                        'Kabupaten Sampang',
-                                        'Kabupaten Pamekasan',
-                                        'Kabupaten Sumenep']]
-                    kota_df = df[['Tahun', 
-                                    'Kota Kediri',
-                                    'Kota Blitar',
-                                    'Kota Malang',
-                                    'Kota Probolinggo',
-                                    'Kota Pasuruan',
-                                    'Kota Mojokerto',
-                                    'Kota Surabaya',
-                                    'Kota Batu']]
+                    kabupaten_df = df[['Tahun',
+                                       'Kabupaten Pacitan',
+                                       'Kabupaten Ponorogo',
+                                       'Kabupaten Trenggalek',
+                                       'Kabupaten Tulungagung',
+                                       'Kabupaten Blitar',
+                                       'Kabupaten Kediri',
+                                       'Kabupaten Malang',
+                                       'Kabupaten Lumajang',
+                                       'Kabupaten Jember',
+                                       'Kabupaten Banyuwangi',
+                                       'Kabupaten Bondowoso',
+                                       'Kabupaten Situbondo',
+                                       'Kabupaten Probolinggo',
+                                       'Kabupaten Pasuruan',
+                                       'Kabupaten Sidoarjo',
+                                       'Kabupaten Mojokerto',
+                                       'Kabupaten Jombang',
+                                       'Kabupaten Nganjuk',
+                                       'Kabupaten Madiun',
+                                       'Kabupaten Magetan',
+                                       'Kabupaten Ngawi',
+                                       'Kabupaten Bojonegoro',
+                                       'Kabupaten Tuban',
+                                       'Kabupaten Lamongan',
+                                       'Kabupaten Gresik',
+                                       'Kabupaten Bangkalan',
+                                       'Kabupaten Sampang',
+                                       'Kabupaten Pamekasan',
+                                       'Kabupaten Sumenep']]
+                    kota_df = df[['Tahun',
+                                  'Kota Kediri',
+                                  'Kota Blitar',
+                                  'Kota Malang',
+                                  'Kota Probolinggo',
+                                  'Kota Pasuruan',
+                                  'Kota Mojokerto',
+                                  'Kota Surabaya',
+                                  'Kota Batu']]
                     total_df = df[['Tahun', 'Jawa Timur']]
 
                 # Menampilkan tabel Kabupaten secara urut berdasarkan tahun
-                    st.subheader('Tabel Harapan Lama Sekolah (HLS) Kabupaten 2010-2023')
+                    st.subheader(
+                        'Tabel Harapan Lama Sekolah (HLS) Kabupaten 2010-2023')
                     st.dataframe(kabupaten_df)
 
                 # Menampilkan tabel Kota secara urut berdasarkan tahun
-                    st.subheader('Tabel Harapan Lama Sekolah (HLS) Kota 2010-2023')
+                    st.subheader(
+                        'Tabel Harapan Lama Sekolah (HLS) Kota 2010-2023')
                     st.dataframe(kota_df)
 
                 # Menampilkan tabel total Jawa Timur
-                    st.subheader('Tabel Harapan Lama Sekolah (HLS) 2010-2023 Jawa Timur (Total Kabupaten + Kota)')
+                    st.subheader(
+                        'Tabel Harapan Lama Sekolah (HLS) 2010-2023 Jawa Timur (Total Kabupaten + Kota)')
                     st.dataframe(total_df)
 
                 # Create a line chart for districts (Kabupaten)
-                    districts = df.columns[1:24]  # Adjust index based on your data
-                    df_districts = df.melt(id_vars='Tahun', value_vars=districts, var_name='Kabupaten', value_name='Harapan Lama Sekolah (HLS)')
+                    # Adjust index based on your data
+                    districts = df.columns[1:24]
+                    df_districts = df.melt(id_vars='Tahun', value_vars=districts,
+                                           var_name='Kabupaten', value_name='Harapan Lama Sekolah (HLS)')
 
                 # Plotting Districts Line Chart
-                    st.subheader("Pengeluaran Per Kapita Riil Disesuaikan - Kabupaten")
-                    fig_districts = px.line(df_districts, x='Tahun', y='Harapan Lama Sekolah (HLS)', color='Kabupaten', title='Harapan Lama Sekolah (HLS) Disesuaikan (Kabupaten) 2010-2023')
-                    fig_districts.update_layout(xaxis_title='Tahun', yaxis_title='Harapan Lama Sekolah (HLS)')
+                    st.subheader(
+                        "Pengeluaran Per Kapita Riil Disesuaikan - Kabupaten")
+                    fig_districts = px.line(df_districts, x='Tahun', y='Harapan Lama Sekolah (HLS)',
+                                            color='Kabupaten', title='Harapan Lama Sekolah (HLS) Disesuaikan (Kabupaten) 2010-2023')
+                    fig_districts.update_layout(
+                        xaxis_title='Tahun', yaxis_title='Harapan Lama Sekolah (HLS)')
                     st.plotly_chart(fig_districts)
 
                 # Create a line chart for cities (Kota)
                     cities = df.columns[24:]  # Adjust index based on your data
-                    df_cities = df.melt(id_vars='Tahun', value_vars=cities, var_name='Kota', value_name='Harapan Lama Sekolah (HLS)')
+                    df_cities = df.melt(id_vars='Tahun', value_vars=cities,
+                                        var_name='Kota', value_name='Harapan Lama Sekolah (HLS)')
 
                 # Plotting Cities Line Chart
-                    st.subheader("Harapan Lama Sekolah (HLS) Disesuaikan - Kota")
-                    fig_cities = px.line(df_cities, x='Tahun', y='Harapan Lama Sekolah (HLS)', color='Kota', title='Harapan Lama Sekolah (HLS) Disesuaikan (Kota) 2010-2023')
-                    fig_cities.update_layout(xaxis_title='Tahun', yaxis_title='Harapan Lama Sekolah (HLS)')
+                    st.subheader(
+                        "Harapan Lama Sekolah (HLS) Disesuaikan - Kota")
+                    fig_cities = px.line(df_cities, x='Tahun', y='Harapan Lama Sekolah (HLS)',
+                                         color='Kota', title='Harapan Lama Sekolah (HLS) Disesuaikan (Kota) 2010-2023')
+                    fig_cities.update_layout(
+                        xaxis_title='Tahun', yaxis_title='Harapan Lama Sekolah (HLS)')
                     st.plotly_chart(fig_cities)
 
                 elif selected_data_title == 'Angka Melek Huruf (Persen) 2016-2006' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi  Angka Melek Huruf (Persen) 2016-2006")
 
-                # Data Angka Melek Huruf (Persen) 2016-2006 untuk semua kabupaten dan kota di Jawa Timur
-                    data = {
-                        'Tahun': [2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006],
-                        'Kabupaten Pacitan': [91.54, 92.57, 89.57, 91.67, 91.63, 91.6, 91.58, 91.56, 91.54, 91.54, 89.19],
-                        'Kabupaten Ponorogo': [89.74, 89.11, 95.02, 89.37, 88.99, 87.32, 85.73, 85.72, 84.93, 84.93, 80.46],
-                        'Kabupaten Trenggalek': [94.32, 94.41, 95.4, 93.07, 92.88, 92.84, 92.83, 92.69, 92.26, 92.26, 92.26],
-                        'Kabupaten Tulungagung': [96.88, 96.84, 96.97, 94.92, 94.57, 93.58, 93.55, 93.5, 93.47, 93.47, 89.71],
-                        'Kabupaten Blitar': [93.56, 94.49, 92.21, 92.12, 92.05, 92.02, 92, 91.9, 91.04, 91.04, 91.04],
-                        'Kabupaten Kediri': [94.53, 95.04, 93.16, 92.97, 92.87, 92.84, 92.81, 92.76, 92.47, 92.47, 90.69],
-                        'Kabupaten Malang': [92.94, 93.94, 93.27, 91.22, 90.73, 89.59, 89.55, 89.54, 89.17, 89.17, 88.84],
-                        'Kabupaten Lumajang': [87.96, 89.22, 87.03, 86.63, 86.58, 86.56, 86.32, 86.3, 86.28, 86.28, 86.28],
-                        'Kabupaten Jember': [87.33, 88.42, 89.77, 83.79, 83.65, 83.6, 83.48, 83.08, 82.84, 82.84, 82.84],
-                        'Kabupaten Banyuwangi': [92, 91.36, 94.99, 88.44, 88.08, 87.36, 86.66, 86.48, 86.46, 86.46, 85.93],
-                        'Kabupaten Bondowoso': [84.31, 85.29, 86.91, 81.22, 80.72, 78.25, 76.72, 75.31, 74.3, 74.3, 74.3],
-                        'Kabupaten Situbondo': [84.12, 85.29, 85.77, 78.62, 78.31, 78.27, 78.24, 78.2, 78.16, 78.16, 76.99],
-                        'Kabupaten Probolinggo': [83.49, 86.55, 86.41, 80.95, 80.48, 80.44, 78.91, 77.86, 77.71, 77.71, 77.71],
-                        'Kabupaten Pasuruan': [93.2, 92.65, 94.8, 91.71, 91.17, 90.03, 89.99, 88.93, 88.13, 88.13, 88.13],
-                        'Kabupaten Sidoarjo': [98.8, 98.86, 98.05, 97.91, 97.79, 97.76, 97.42, 97.4, 97.37, 97.37, 97.37],
-                        'Kabupaten Mojokerto': [95.94, 96.5, 94.09, 94.47, 94.16, 94.12, 94.11, 94.09, 94.07, 94.07, 91.94],
-                        'Kabupaten Jombang': [96.4, 96.06, 95.66, 94.45, 93.87, 92.87, 92.52, 92.5, 92.48, 92.48, 89.43],
-                        'Kabupaten Nganjuk': [92.13, 94.5, 91.71, 91.16, 91.11, 91.07, 90.48, 90.46, 90.44, 90.44, 89.18],
-                        'Kabupaten Madiun': [89.49, 90.82, 88.79, 90.04, 89.61, 89.55, 89.53, 88.31, 87.1, 87.1, 85.52],
-                        'Kabupaten Magetan': [92.78, 94.58, 95.57, 91.42, 91.08, 90.56, 90.54, 90.28, 89.8, 89.8, 89.8],
-                        'Kabupaten Ngawi': [88.19, 88.74, 89.89, 85.99, 85.58, 85.54, 85.14, 85.12, 85.1, 85.1, 80.91],
-                        'Kabupaten Bojonegoro': [90.69, 91.3, 89.24, 85.13, 84.85, 84.81, 84.78, 84.58, 84.55, 84.55, 84.55],
-                        'Kabupaten Tuban': [88.13, 88.39, 86.3, 86, 85.86, 85.83, 85.79, 85.56, 84.95, 84.95, 84.95],
-                        'Kabupaten Lamongan': [91.66, 91.45, 93.92, 89.09, 88.76, 88.71, 87.15, 86.97, 86.6, 86.6, 85.61],
-                        'Kabupaten Gresik': [95.98, 97.38, 97.54, 96.38, 96.17, 94.56, 94.47, 94.36, 94.04, 94.04, 94.04],
-                        'Kabupaten Bangkalan': [82.91, 86.67, 85.27, 82.93, 82.9, 82.87, 82.84, 82.82, 82.76, 82.76, 82.76],
-                        'Kabupaten Sampang': [75.49, 78.03, 77.93, 69.47, 69.12, 67.56, 66.03, 64.81, 64.12, 64.12, 64.12],
-                        'Kabupaten Pamekasan': [86.75, 86.67, 88.27, 84.48, 84.21, 81.82, 80.84, 80.21, 79.57, 79.45, 79.45],
-                        'Kabupaten Sumenep': [79.31, 80.66, 84.37, 78.75, 78.71, 78.66, 78.64, 78.63, 78.62, 78.62, 78.62],
-                        'Kota Kediri': [98.15, 98.37, 97.04, 97.86, 97.6, 97.56, 97.53, 97.41, 97.4, 96.8, 96.8],
-                        'Kota Blitar': [97.65, 97.79, 95.67, 97.48, 97.31, 97.27, 97.24, 97.23, 97.22, 96.78, 96.78],
-                        'Kota Malang': [98.17, 98.3, 97.45, 98.38, 98.34, 97.24, 97.2, 97.19, 97.19, 97.19, 96.87],
-                        'Kota Probolinggo': [92.65, 93.69, 95.57, 92.66, 92.55, 92.51, 92.49, 92.33, 92.32, 92.01, 88.7],
-                        'Kota Pasuruan': [96.69, 97.38, 98.52, 97.12, 97.07, 96.43, 96.41, 96.14, 95.93, 95.93, 95.6],
-                        'Kota Mojokerto': [97.45, 98.49, 97.44, 97.58, 97.18, 97.13, 97.12, 97.11, 97.1, 96.77, 96.77],
-                        'Kota Madiun': [96.4, 98.64, 96.05, 98.15, 97.84, 97.8, 97.79, 97.75, 97.71, 97.71, 96],
-                        'Kota Surabaya': [98.27, 98.47, 97.04, 98.4, 98.35, 98.07, 98.06, 98, 97.94, 97.94, 96.48],
-                        'Kota Batu': [96.95, 97.8, 94.79, 93.37, 98.32, 98.27, 98.26, 97.78, 97.3, 97.3, 94.9],
-                        'Jawa Timur': [91.59, 92.3, 92.23, 90.49, 89.28, 88.52, 88.34, 87.8, 87.43, 87.42, 87.1]
-                    }
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/IPM Angka Melek Huruf (Persen) 2016-2006.xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Menghitung jumlah elemen untuk setiap kolom
-                    for key, values in data.items():
-                        print(f"{key}: {len(values)}")   
+                    # Memeriksa kolom yang ada
+                    print(df.columns)  # Memeriksa nama kolom
 
-                # Membuat dataframe dari data
-                    df = pd.DataFrame(data)
-                    df['Tahun'] = df['Tahun'].astype(str)  # Convert years to strings for display
+                    # Format percentage columns
+                    # Mengambil semua kolom kecuali kolom pertama
+                    percentage_columns = df.columns[1:]
 
-                # Format kolom persentase dengan simbol %
-                    percentage_columns = df.columns[1:]  # Mengambil semua kolom kecuali 'Tahun'
-                    df[percentage_columns] = df[percentage_columns].applymap(lambda x: f"{x:.2f}%")  # Memformat dengan 2 desimal
+                    # Membuat DataFrame untuk Kabupaten
+                    kabupaten_df = df[df['Kabupaten/Kota'].str.contains('Kabupaten', na=False)][[
+                        'Kabupaten/Kota'] + list(percentage_columns)]
+                    # Membuat DataFrame untuk Kota
+                    kota_df = df[df['Kabupaten/Kota'].str.contains(
+                        'Kota', na=False)][['Kabupaten/Kota'] + list(percentage_columns)]
+                    # Membuat DataFrame untuk Total Jawa Timur
+                    jawa_timur_df = df[df['Kabupaten/Kota'] ==
+                                       'Jawa Timur'][['Kabupaten/Kota'] + list(percentage_columns)]
 
-                # Memformat tabel baru untuk lebih mudah dibaca
-                # Membuat tabel baru terpisah sesuai kelompok wilayah Kabupaten dan Kota
-                    kabupaten_df = df[['Tahun', 
-                                        'Kabupaten Pacitan', 
-                                        'Kabupaten Ponorogo', 
-                                        'Kabupaten Trenggalek', 
-                                        'Kabupaten Tulungagung',
-                                        'Kabupaten Blitar',
-                                        'Kabupaten Kediri',
-                                        'Kabupaten Malang',
-                                        'Kabupaten Lumajang',
-                                        'Kabupaten Jember',
-                                        'Kabupaten Banyuwangi',
-                                        'Kabupaten Bondowoso',
-                                        'Kabupaten Situbondo',
-                                        'Kabupaten Probolinggo',
-                                        'Kabupaten Pasuruan',
-                                        'Kabupaten Sidoarjo',
-                                        'Kabupaten Mojokerto',
-                                        'Kabupaten Jombang',
-                                        'Kabupaten Nganjuk',
-                                        'Kabupaten Madiun',
-                                        'Kabupaten Magetan',
-                                        'Kabupaten Ngawi',
-                                        'Kabupaten Bojonegoro',
-                                        'Kabupaten Tuban',
-                                        'Kabupaten Lamongan',
-                                        'Kabupaten Gresik',
-                                        'Kabupaten Bangkalan',
-                                        'Kabupaten Sampang',
-                                        'Kabupaten Pamekasan',
-                                        'Kabupaten Sumenep']]
-                    kota_df = df[['Tahun', 
-                                    'Kota Kediri',
-                                    'Kota Blitar',
-                                    'Kota Malang',
-                                    'Kota Probolinggo',
-                                    'Kota Pasuruan',
-                                    'Kota Mojokerto',
-                                    'Kota Surabaya',
-                                    'Kota Batu']]
-                    total_df = df[['Tahun', 'Jawa Timur']]
+                    # Mengubah nilai desimal ke persen dan format dengan simbol %
+                    def format_percentage(df):
+                        # Mengalikan dengan 100
+                        df[percentage_columns] = df[percentage_columns]
+                        # Format sebagai persen
+                        return df.style.format({col: '{:.2f}%' for col in percentage_columns})
 
-                # Menampilkan tabel Kabupaten secara urut berdasarkan tahun
-                    st.subheader('Tabel Angka Melek Huruf (Persen) 2016-2006')
-                    st.dataframe(kabupaten_df)
+                    # Terapkan format ke masing-masing DataFrame
+                    kabupaten_styled = format_percentage(
+                        kabupaten_df)  # Simpan hasil format di variabel
+                    # Simpan hasil format di variabel
+                    kota_styled = format_percentage(kota_df)
+                    jawa_timur_styled = format_percentage(
+                        jawa_timur_df)  # Simpan hasil format di variabel
 
-                # Menampilkan tabel Kota secara urut berdasarkan tahun
-                    st.subheader('Tabel Angka Melek Huruf (Persen) 2016-2006')
-                    st.dataframe(kota_df)
+                    # Buat tabs untuk menampilkan data
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Menampilkan tabel total Jawa Timur
-                    st.subheader('Tabel Angka Melek Huruf (Persen) 2016-2006 Jawa Timur (Total Kabupaten + Kota)')
-                    st.dataframe(total_df)
+                    # Tab 1 untuk data tabel
+                    with tab1:
+                        st.subheader(
+                            'Tabel Angka Melek Huruf (Persen) 2016-2006 - Kabupaten')
+                        # Tampilkan DataFrame yang sudah diformat
+                        st.write(kabupaten_styled)
 
-                # Plot untuk Kabupaten
-                    st.write("### Line Chart Angka Melek Huruf untuk Kabupaten")
-                    kabupaten_df_long = pd.melt(kabupaten_df, id_vars=['Tahun'], var_name='Kabupaten', value_name='Persentase')
-                    fig_kabupaten = px.line(kabupaten_df_long, x='Tahun', y='Persentase', color='Kabupaten', 
-                                            labels={'Persentase': 'Angka Melek Huruf (%)'}, title='Angka Melek Huruf Kabupaten (Persen) 2016-2006')
-                    st.plotly_chart(fig_kabupaten)
+                        st.subheader(
+                            'Tabel Angka Melek Huruf (Persen) 2016-2006 - Kota')
+                        # Tampilkan DataFrame yang sudah diformat
+                        st.write(kota_styled)
 
-                # Plot untuk Kota
-                    st.write("### Line Chart Angka Melek Huruf untuk Kota")
-                    kota_df_long = pd.melt(kota_df, id_vars=['Tahun'], var_name='Kota', value_name='Persentase')
-                    fig_kota = px.line(kota_df_long, x='Tahun', y='Persentase', color='Kota', 
-                                    labels={'Persentase': 'Angka Melek Huruf (%)'}, title='Angka Melek Huruf Kota (Persen) 2016-2006')
-                    st.plotly_chart(fig_kota)
+                        st.subheader(
+                            'Tabel Angka Melek Huruf (Persen) 2016-2006 - Jawa Timur (Total)')
+                        # Tampilkan DataFrame yang sudah diformat
+                        st.write(jawa_timur_styled)
 
-                # Plot untuk Total Jawa Timur (Opsional)
-                    st.write("### Line Chart Angka Melek Huruf Jawa Timur")
-                    total_df_long = pd.melt(total_df, id_vars=['Tahun'], var_name='Jawa Timur', value_name='Persentase')
-                    fig_total = px.line(total_df_long, x='Tahun', y='Persentase', color='Jawa Timur', 
-                                        labels={'Persentase': 'Angka Melek Huruf (%)'}, title='Angka Melek Huruf Jawa Timur (Persen) 2016-2006')
-                    st.plotly_chart(fig_total)
+                    # Tab 2 untuk visualisasi
+                    with tab2:
+                        st.write(
+                            "### Visualisasi Angka Melek Huruf (Persen) 2016-2006")
 
-                # Membuat line chart interaktif
-                    st.write("### Visualisasi Angka Melek Huruf (Persen) 2016-2006")
+                        # Select box untuk memilih Kabupaten dan Kota
+                        selected_kabupaten = st.selectbox(
+                            "Pilih Kabupaten", kabupaten_df['Kabupaten/Kota'].values)
+                        selected_kota = st.selectbox(
+                            "Pilih Kota", kota_df['Kabupaten/Kota'].values)
 
-                # Membuat line chart interaktif menggunakan Plotly
-                    fig = px.line(df, 
-                                x='Tahun', 
-                                y=df.columns[1:],  # Ambil semua kolom kecuali 'Tahun'
-                                labels={'value': 'Angka Melek Huruf (%)', 'variable': 'Kabupaten/Kota'},
-                                title="Perkembangan Angka Melek Huruf (Persen) 2016-2006 di Jawa Timur")
-                    
-                # Tambahkan fitur interaktif seperti hover
-                    fig.update_layout(
-                        hovermode="x unified",  # Menampilkan informasi hover yang terintegrasi
-                        xaxis_title='Tahun',
-                        yaxis_title='Angka Melek Huruf (%)',
-                        legend_title='Kabupaten/Kota',
-                        template='plotly_white'
-                    )
+                        # Line chart untuk Kabupaten yang dipilih
+                        kabupaten_long = pd.melt(kabupaten_df, id_vars='Kabupaten/Kota',
+                                                 value_vars=percentage_columns, var_name='Tahun', value_name='Persentase')
+                        fig_kabupaten = px.line(kabupaten_long[kabupaten_long['Kabupaten/Kota'] == selected_kabupaten], x='Tahun', y='Persentase',
+                                                labels={
+                                                    'Persentase': 'Angka Melek Huruf (%)'},
+                                                title=f'Angka Melek Huruf {selected_kabupaten} (Persen) 2016-2006')
+                        st.plotly_chart(fig_kabupaten)
 
-                # Tampilkan line chart di Streamlit
-                    st.plotly_chart(fig, use_container_width=True)
+                        # Line chart untuk Kota yang dipilih
+                        kota_long = pd.melt(
+                            kota_df, id_vars='Kabupaten/Kota', value_vars=percentage_columns, var_name='Tahun', value_name='Persentase')
+                        fig_kota = px.line(kota_long[kota_long['Kabupaten/Kota'] == selected_kota], x='Tahun', y='Persentase',
+                                           labels={
+                                               'Persentase': 'Angka Melek Huruf (%)'},
+                                           title=f'Angka Melek Huruf {selected_kota} (Persen) 2016-2006')
+                        st.plotly_chart(fig_kota)
+
+                        # Line chart untuk Total Jawa Timur
+                        jawa_timur_long = pd.melt(jawa_timur_df, id_vars='Kabupaten/Kota',
+                                                  value_vars=percentage_columns, var_name='Tahun', value_name='Persentase')
+                        fig_total = px.line(jawa_timur_long,
+                                            x='Tahun', y='Persentase',
+                                            labels={
+                                                'Persentase': 'Angka Melek Huruf (%)'},
+                                            title='Angka Melek Huruf Total Jawa Timur (Persen) 2016-2006',
+                                            markers=True)  # Menambahkan marker untuk point data
+                        st.plotly_chart(fig_total)
 
                 elif selected_data_title == 'Angka Harapan Hidup Jawa Timur (LF SP2020)' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Susunan Tabel Baru & Visualisasi Angka Harapan Hidup Jawa Timur (LF SP2020)")
 
-                # Tampilkan tabel data
-                    st.subheader("Tabel Data Angka Harapan Hidup dan IPM")
-                    st.dataframe(data)
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Harapan Hidup Jawa Timur (LF SP2020).xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Pilih kolom untuk visualisasi
-                    wilayah = st.selectbox("Pilih Wilayah", data['Wilayah'].unique())
+                    # Definisikan value_vars di sini
+                    value_vars = ["Angka Harapan Hidup (LF SP2020) (Tahun) 2023",
+                                  "Angka Harapan Hidup (LF SP2020) (Tahun) 2022",
+                                  "Angka Harapan Hidup (LF SP2020) (Tahun) 2021",
+                                  "Angka Harapan Hidup (LF SP2020) (Tahun) 2020",
+                                  "IPM 2023", "IPM 2022", "IPM 2021", "IPM 2020",
+                                  "IPM 2019", "IPM 2018", "IPM 2017", "IPM 2016",
+                                  "IPM 2015", "IPM 2014", "IPM 2013", "IPM 2012",
+                                  "IPM 2011", "IPM 2010",
+                                  "AHH 2023", "AHH 2022", "AHH 2021", "AHH 2020",
+                                  "AHH 2019", "AHH 2018", "AHH 2017", "AHH 2016",
+                                  "AHH 2015", "AHH 2014", "AHH 2013", "AHH 2012",
+                                  "AHH 2011", "AHH 2010"]
 
-                # Pilih metrik yang akan divisualisasikan
-                    metric_options = {
-                        "Angka Harapan Hidup": ["Angka Harapan Hidup (LF SP2020) (Tahun) 2023", 
-                                                "Angka Harapan Hidup (LF SP2020) (Tahun) 2022", 
-                                                "Angka Harapan Hidup (LF SP2020) (Tahun) 2021", 
-                                                "Angka Harapan Hidup (LF SP2020) (Tahun) 2020"],
-                        "IPM": ["IPM 2023", "IPM 2022", "IPM 2021", "IPM 2020",
-                                "IPM 2019", "IPM 2018", "IPM 2017", "IPM 2016",
-                                "IPM 2015", "IPM 2014", "IPM 2013", "IPM 2012",
-                                "IPM 2011", "IPM 2010"],
-                        "AHH": ["AHH 2023", "AHH 2022", "AHH 2021", "AHH 2020",
-                                "AHH 2019", "AHH 2018", "AHH 2017", "AHH 2016",
-                                "AHH 2015", "AHH 2014", "AHH 2013", "AHH 2012",
-                                "AHH 2011", "AHH 2010"]
-                    }
+                    # Mengubah data menjadi format long untuk visualisasi multi-bar plot
+                    df_long = df.melt(
+                        id_vars='Wilayah', value_vars=value_vars, var_name='Tahun', value_name='Indeks')
 
-                    metric_type = st.selectbox("Pilih Tipe Metrik", list(metric_options.keys()))
-                    metric_years = metric_options[metric_type]
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Filter data berdasarkan wilayah
-                    filtered_data = data[data['Wilayah'] == wilayah]
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write("Data Angka Harapan Hidup dan IPM")
+                        st.dataframe(df)
 
-                # Membuat data dalam format yang cocok untuk line chart
-                    filtered_data_melted = filtered_data.melt(
-                        id_vars=["Wilayah"], 
-                        value_vars=metric_years, 
-                        var_name="Tahun", 
-                        value_name=metric_type
-                    )
+                    # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Pilih kolom untuk visualisasi
+                        wilayah = st.selectbox(
+                            "Pilih Wilayah", df['Wilayah'].unique())
+                        # Filter data berdasarkan wilayah
+                        filtered_data = df[df['Wilayah'] == wilayah]
 
-                # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
-                    filtered_data_melted['Tahun'] = filtered_data_melted['Tahun'].str.extract('(\d+)').astype(int)
+                        # Membuat data dalam format yang cocok untuk line chart
+                        filtered_data_melted = filtered_data.melt(
+                            id_vars=["Wilayah"],
+                            value_vars=value_vars,  # Gunakan value_vars yang sudah didefinisikan
+                            var_name="Tahun",
+                            value_name="Angka Harapan Hidup dan IPM"
+                        )
 
-                # Membuat line chart interaktif
-                    fig = px.line(filtered_data_melted, 
-                                x="Tahun", 
-                                y=metric_type, 
-                                title=f"Line Chart: {metric_type} di {wilayah}",
-                                labels={"Tahun": "Tahun", metric_type: metric_type})
+                        # Pilih metrik yang akan divisualisasikan
+                        metric_options = {
+                            "Angka Harapan Hidup": ["Angka Harapan Hidup (LF SP2020) (Tahun) 2023",
+                                                    "Angka Harapan Hidup (LF SP2020) (Tahun) 2022",
+                                                    "Angka Harapan Hidup (LF SP2020) (Tahun) 2021",
+                                                    "Angka Harapan Hidup (LF SP2020) (Tahun) 2020"],
+                            "IPM": ["IPM 2023", "IPM 2022", "IPM 2021", "IPM 2020",
+                                    "IPM 2019", "IPM 2018", "IPM 2017", "IPM 2016",
+                                    "IPM 2015", "IPM 2014", "IPM 2013", "IPM 2012",
+                                    "IPM 2011", "IPM 2010"],
+                            "AHH": ["AHH 2023", "AHH 2022", "AHH 2021", "AHH 2020",
+                                    "AHH 2019", "AHH 2018", "AHH 2017", "AHH 2016",
+                                    "AHH 2015", "AHH 2014", "AHH 2013", "AHH 2012",
+                                    "AHH 2011", "AHH 2010"]
+                        }
 
-                # Tampilkan line chart
-                    st.plotly_chart(fig)
+                        metric_type = st.selectbox(
+                            "Pilih Tipe Metrik", list(metric_options.keys()))
+                        metric_years = metric_options[metric_type]
+
+                        # Filter data berdasarkan wilayah
+                        filtered_data = data[data['Wilayah'] == wilayah]
+
+                        # Membuat data dalam format yang cocok untuk line chart
+                        filtered_data_melted = filtered_data.melt(
+                            id_vars=["Wilayah"],
+                            value_vars=metric_years,
+                            var_name="Tahun",
+                            value_name=metric_type
+                        )
+
+                        # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
+                        filtered_data_melted['Tahun'] = filtered_data_melted['Tahun'].str.extract(
+                            '(\d+)').astype(int)
+
+                        # Membuat line chart interaktif
+                        fig = px.line(filtered_data_melted,
+                                      x="Tahun",
+                                      y=metric_type,
+                                      title=f"Line Chart: {metric_type} di {wilayah}",
+                                      labels={"Tahun": "Tahun", metric_type: metric_type})
+
+                        # Tampilkan line chart
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'IPM Jawa Timur 2010-2023' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi IPM Jawa Timur 2010-2023")
 
-                # Pilih kolom untuk visualisasi
-                    wilayah = st.selectbox("Pilih Wilayah", data['Wilayah'].unique())
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/IPM Jawa Timur 2010-2023.xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Kolom tahun dari 2010 hingga 2023 (hanya angka tahun)
-                    metric_years = [2023, 2022, 2021, 2020,
-                                    2019, 2018, 2017, 2016,
-                                    2015, 2014, 2013, 2012,
-                                    2011, 2010]
+                    # Definisikan value_vars di sini
+                    value_vars = [2010, 2011, 2012, 2013, 2014, 2015,
+                                  2016, 2017, 2018, 2019, 2020, 2021,
+                                  2022, 2023]
 
-                # Filter data berdasarkan wilayah
-                    filtered_data = data[data['Wilayah'] == wilayah]
+                    # Mengubah data menjadi format long untuk visualisasi multi-bar plot
+                    df_long = df.melt(
+                        id_vars='Wilayah', value_vars=value_vars, var_name='Tahun', value_name='Indeks')
 
-                # Membuat data dalam format yang cocok untuk line chart
-                    filtered_data_melted = filtered_data.melt(
-                        id_vars=["Wilayah"],  # Kolom yang tidak di-melt (Wilayah)
-                        value_vars=metric_years,  # Kolom tahun yang akan di-melt
-                        var_name="Tahun",  # Nama kolom baru untuk tahun
-                        value_name="IPM"   # Nama kolom baru untuk nilai IPM
-                    )
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
-                    filtered_data_melted['Tahun'] = filtered_data_melted['Tahun'].astype(int)
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write("IPM Jawa Timur 2010-2023")
+                        st.dataframe(df)
 
-                # Membuat line chart interaktif
-                    fig = px.line(filtered_data_melted, 
-                                x="Tahun", 
-                                y="IPM", 
-                                title=f"Line Chart: IPM di {wilayah} (2010-2023)",
-                                labels={"Tahun": "Tahun", "IPM": "Indeks Pembangunan Manusia"})
+                    # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Pilih kolom untuk visualisasi
+                        wilayah = st.selectbox(
+                            "Pilih Wilayah", df['Wilayah'].unique())
+                        # Filter data berdasarkan wilayah
+                        filtered_data = df[df['Wilayah'] == wilayah]
 
-                # Tampilkan line chart
-                    st.plotly_chart(fig)
+                        # Membuat data dalam format yang cocok untuk line chart
+                        filtered_data_melted = filtered_data.melt(
+                            id_vars=["Wilayah"],
+                            value_vars=value_vars,  # Gunakan value_vars yang sudah didefinisikan
+                            var_name="Tahun",
+                            value_name="IPM"
+                        )
+
+                        # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
+                        filtered_data_melted['Tahun'] = filtered_data_melted['Tahun'].astype(
+                            int)
+
+                        # Membuat line chart interaktif
+                        fig = px.line(filtered_data_melted,
+                                      x="Tahun",
+                                      y="IPM",
+                                      title=f"Line Chart: IPM di {wilayah} (2010-2023)",
+                                      labels={"Tahun": "Tahun", "IPM": "Indeks Pembangunan Manusia"})
+
+                        # Tampilkan line chart
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'Indeks Pembangunan Manusia Menurut Kabupaten dan Kota' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi Indeks Pembangunan Manusia Menurut Kabupaten dan Kota")
 
-                # Pilih kolom untuk visualisasi
-                    wilayah = st.selectbox("Pilih Wilayah", data['Kabupaten/Kota Se Jawa Timur'].unique())
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Manusia Menurut Kabupaten_Kota.xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Kolom tahun dari 2010 hingga 2023 (hanya angka tahun)
-                    metric_years = ["IPM 2023", "IPM 2022", "IPM 2021"]  # Sesuaikan tahun yang ingin divisualisasikan
+                    # Mengubah data menjadi format long untuk visualisasi multi-bar plot
+                    df_long = df.melt(id_vars='Kabupaten/Kota Se Jawa Timur', value_vars=[
+                        'IPM 2021', 'IPM 2022', 'IPM 2023'], var_name='Tahun', value_name='Indeks')
 
-                # Filter data berdasarkan wilayah
-                    filtered_data = data[data['Kabupaten/Kota Se Jawa Timur'] == wilayah]
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Membuat data dalam format yang cocok untuk bar chart
-                    filtered_data_melted = filtered_data.melt(
-                        id_vars=["Kabupaten/Kota Se Jawa Timur"],  # Kolom yang tidak di-melt (Kabupaten/Kota Se Jawa Timur)
-                        value_vars=metric_years,  # Kolom tahun yang akan di-melt
-                        var_name="Tahun",  # Nama kolom baru untuk tahun
-                        value_name="IPM"   # Nama kolom baru untuk nilai IPM
-                    )
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write(
+                            "Indeks Pembangunan Manusia Menurut Kabupaten dan Kota:")
+                        st.dataframe(df)
 
-                # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
-                    filtered_data_melted['Tahun'] = filtered_data_melted['Tahun'].str.extract('(\d+)').astype(int)
+                    # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Menampilkan filter multiselect untuk memilih wilayah
+                        wilayah_terpilih = st.multiselect(
+                            "Pilih Wilayah", df_long['Kabupaten/Kota Se Jawa Timur'].unique(), default=df_long['Kabupaten/Kota Se Jawa Timur'].unique()[:3])
 
-                # Membuat bar chart interaktif
-                    fig = px.bar(filtered_data_melted, 
-                                x="Tahun", 
-                                y="IPM", 
-                                title=f"Bar Chart: IPM di {wilayah} (2021-2023)",
-                                labels={"Tahun": "Tahun", "IPM": "Indeks Pembangunan Manusia"},
-                                hover_data=["Kabupaten/Kota Se Jawa Timur"],  # Tampilkan informasi wilayah pada hover
-                                text="IPM")  # Menampilkan nilai IPM di atas batang
+                        # Filter data berdasarkan wilayah yang dipilih
+                        filtered_data = df_long[df_long['Kabupaten/Kota Se Jawa Timur'].isin(
+                            wilayah_terpilih)]
 
-                # Tambahkan gaya bar
-                    fig.update_traces(marker_color='rgb(26, 118, 255)', textposition='outside')
+                        # Cek apakah filtered_data tidak kosong sebelum melanjutkan
+                        if not filtered_data.empty:
+                            # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
+                            filtered_data['Tahun'] = filtered_data['Tahun'].str.extract(
+                                '(\d+)').astype(int)
 
-                # Sesuaikan tampilan layout
-                    fig.update_layout(
-                        xaxis_title="Tahun",
-                        yaxis_title="Indeks Pembangunan Manusia",
-                        title_x=0.5,  # Pusatkan judul
-                        bargap=0.2,   # Jarak antar bar
-                        barmode='group'  # Mode tampilan bar (group)
-                    )
+                            # Membuat bar chart interaktif
+                            fig = px.bar(filtered_data,
+                                         x="Tahun",
+                                         y="Indeks",
+                                         color="Kabupaten/Kota Se Jawa Timur",  # Warna otomatis berdasarkan wilayah
+                                         title=f"Bar Chart: IPM di {', '.join(wilayah_terpilih)} (2021-2023)",
+                                         labels={
+                                             "Tahun": "Tahun",
+                                             "Indeks": "Indeks Pembangunan Manusia"
+                                         },
+                                         hover_data=[
+                                             "Kabupaten/Kota Se Jawa Timur"],
+                                         text="Indeks")
 
-                # Tampilkan bar chart
-                    st.plotly_chart(fig)
+                            # Tambahkan gaya bar
+                            fig.update_traces(textposition='outside')
 
-                elif selected_data_title == 'Indeks Pembangunan Manusia (UHH LF SP2020)' and visual_type == "Line Chart":
+                            # Sesuaikan tampilan layout
+                            fig.update_layout(
+                                xaxis_title="Tahun",
+                                yaxis_title="Indeks Pembangunan Manusia",
+                                title_x=0.5,
+                                bargap=0.2,
+                                barmode='group'
+                            )
+
+                            # Tampilkan bar chart
+                            st.plotly_chart(fig)
+
+                elif selected_data_title == 'Indeks Pembangunan Manusia (UHH LF SP2020)' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi Indeks Pembangunan Manusia (UHH LF SP2020)")
 
-                # Pilih kolom untuk visualisasi
-                    wilayah = st.selectbox("Pilih Wilayah", data['Wilayah'].unique())
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Manusia (UHH LF SP2020).xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Kolom tahun 
-                    metric_years = ["IPM 2021 (UHH LF SP2020)", "IPM 2022 (UHH LF SP2020)", "IPM 2023 (UHH LF SP2020)"]
+                    # Mengubah data menjadi format long untuk visualisasi multi-bar plot
+                    df_long = df.melt(id_vars='Wilayah', value_vars=[
+                        'IPM 2021 (UHH LF SP2020)', 'IPM 2022 (UHH LF SP2020)', 'IPM 2023 (UHH LF SP2020)'], var_name='Tahun', value_name='Indeks')
 
-                # Filter data berdasarkan wilayah
-                    filtered_data = data[data['Wilayah'] == wilayah]
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Membuat data dalam format yang cocok untuk line chart
-                    filtered_data_melted = filtered_data.melt(
-                        id_vars=["Wilayah"],  # Kolom yang tidak di-melt (Wilayah)
-                        value_vars=metric_years,  # Kolom tahun yang akan di-melt
-                        var_name="Tahun",  # Nama kolom baru untuk tahun
-                        value_name="IPM"   # Nama kolom baru untuk nilai IPM
-                    )
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write("Indeks Pembangunan Manusia (UHH LF SP2020):")
+                        st.dataframe(df)
 
-                # Ubah kolom 'Tahun' menjadi format numerik untuk sumbu x
-                    filtered_data_melted['Tahun'] = filtered_data_melted['Tahun'].str.extract('(\d+)').astype(int)
+                    # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Menampilkan filter multiselect untuk memilih wilayah
+                        wilayah_terpilih = st.multiselect(
+                            "Pilih Wilayah", df_long['Wilayah'].unique(), default=df_long['Wilayah'].unique()[:3])  # Default 3 wilayah pertama
 
-                # Membuat line chart interaktif
-                    fig = px.line(filtered_data_melted, 
-                                x="Tahun", 
-                                y="IPM", 
-                                title=f"Line Chart: IPM (UHH LF SP2020) di {wilayah} (2020-2023)",
-                                labels={"Tahun": "Tahun", "IPM": "Indeks Pembangunan Manusia"})
+                        # Menampilkan filter multiselect untuk memilih tahun
+                        tahun_terpilih = st.multiselect(
+                            'Pilih Tahun yang ingin ditampilkan:',
+                            options=['IPM 2021 (UHH LF SP2020)',
+                                     'IPM 2022 (UHH LF SP2020)', 'IPM 2023 (UHH LF SP2020)'],
+                            default=['IPM 2021 (UHH LF SP2020)',
+                                     'IPM 2022 (UHH LF SP2020)', 'IPM 2023 (UHH LF SP2020)'],
+                            key='tahun_ipmuhh'
+                        )
 
-                # Tampilkan line chart
-                    st.plotly_chart(fig)
+                        # Filter DataFrame berdasarkan wilayah dan tahun yang dipilih
+                        filtered_df = df_long[(df_long['Wilayah'].isin(wilayah_terpilih)) & (
+                            df_long['Tahun'].isin(tahun_terpilih))]
 
+                        # Membuat visualisasi Bar Chart menggunakan Plotly
+                        fig = px.bar(filtered_df, x='Wilayah', y='Indeks', color='Tahun',
+                                     title='Bar Chart: IPM (UHH LF SP2020) per Wilayah (2020-2023)',
+                                     labels={
+                                         'Wilayah': 'Wilayah',
+                                         'Indeks': 'Indeks Pembangunan Manusia (UHH LF SP2020)'
+                                     },
+                                     height=600)
+
+                        # Menyesuaikan layout untuk memperjelas visualisasi
+                        fig.update_layout(
+                            barmode='group',  # Mengelompokkan bar berdasarkan tahun
+                            xaxis_title="Wilayah",  # Sumbu X adalah wilayah
+                            yaxis_title="Indeks Pembangunan Manusia (UHH LF SP2020)",
+                            legend_title="Tahun",
+                            template='plotly_white'
+                        )
+
+                        # Tampilkan bar chart
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'Angka Melek Huruf (Penduduk Usia 15 +)' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi Angka Melek Huruf (Penduduk Usia 15 +)")
 
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Melek Huruf (Penduduk Usia 15 +).xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Sidebar interaktif untuk memilih kelompok umur dan jenis kelamin
-                    st.sidebar.title("Filter Visualisasi")
-                    age_group = st.sidebar.selectbox('Pilih Kelompok Umur', ['15-44', '45+', 'Kota Mojokerto (15+)'])
-                    gender = st.sidebar.selectbox('Pilih Jenis Kelamin', ['Laki-Laki', 'Perempuan', 'Laki-Laki + Perempuan'])
+                    # Mengubah data menjadi format long untuk visualisasi multi-line plot
+                    df_long = df.melt(id_vars='Kelompok Umur 3', value_vars=[
+                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2021',
+                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2022',
+                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2023',
+                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2021',
+                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2022',
+                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2023'
+                    ], var_name='Tahun dan Kelompok', value_name='Angka Melek Huruf')
 
-                # Tampilkan judul visualisasi
-                    st.markdown(f"### Visualisasi Angka Melek Huruf ({age_group}, {gender})")
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Data Dummy: ganti dengan data asli kamu
-                    data = pd.DataFrame({
-                        'Kelompok Umur': ['15-44', '45+', 'Kota Mojokerto (15+)', '15-44', '45+', 'Kota Mojokerto (15+)'],
-                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2021': [99.62, 98.64, 99.35, 100.00, 99.08, 99.62],
-                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2022': [99.53, 99.78, 99.64, 99.53, 94.46, 97.46],
-                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2023': [100.00, 100.00, 99.71, 100.00, 96.13, 98.29],
-                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2021': [99.77, 99.53, 99.35, 99.53, 94.64, 97.46],
-                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2022': [100.00, 96.13, 99.53, 96.13, 97.53, 98.26],
-                        'Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2023': [99.71, 98.94, 99.64, 97.53, 98.54, 98.38]
-                    })
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write(
+                            "Tabel Angka Melek Huruf (Penduduk Usia 15 +) :")
+                        st.dataframe(df)
 
-                # Filter data berdasarkan kelompok umur
-                    filtered_data = data[data['Kelompok Umur'] == age_group]
+                    # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Menampilkan filter untuk memilih tahun
+                        st.sidebar.title("Filter Data")
+                        selected_year = st.sidebar.selectbox(
+                            'Pilih Tahun', ['2021', '2022', '2023']
+                        )
 
-                # Tentukan kolom yang sesuai berdasarkan jenis kelamin yang dipilih
-                    if gender == 'Laki-Laki':
-                        metric_years = [
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2021",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2022",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2023"
-                        ]
-                    elif gender == 'Perempuan':
-                        metric_years = [
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2021",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2022",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2023"
-                        ]
-                    else:
-                        metric_years = [
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2021",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2021",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2022",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2022",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) L 2023",
-                            "Angka Melek Huruf (Penduduk Usia 15 +) (Persen) P 2023"
-                        ]
+                        # Filter DataFrame berdasarkan tahun yang dipilih
+                        filtered_df = df_long[df_long['Tahun dan Kelompok'].str.contains(
+                            selected_year)]
 
-                # Format data untuk visualisasi
-                    filtered_data_melted = filtered_data.melt(
-                        value_vars=metric_years, var_name="Tahun dan Kelompok", value_name="Angka Melek Huruf"
-                    )
+                        # Buat bar chart interaktif
+                        fig = px.bar(
+                            filtered_df,
+                            x="Kelompok Umur 3",  # Gunakan kolom yang ada di df_long
+                            y="Angka Melek Huruf",
+                            color='Tahun dan Kelompok',  # Tambahkan warna berdasarkan kelompok tahun
+                            title=f"Bar Chart: Angka Melek Huruf ({selected_year})",
+                            labels={
+                                "Kelompok Umur 3": "Kelompok Umur",
+                                "Angka Melek Huruf": "Angka Melek Huruf (Persen)"
+                            },
+                            hover_data=["Tahun dan Kelompok"],
+                            text="Angka Melek Huruf"
+                        )
 
-                # Ubah nilai menjadi format persentase
-                    filtered_data_melted["Angka Melek Huruf"] = filtered_data_melted["Angka Melek Huruf"].apply(lambda x: f"{x:.2f}%")
+                        # Atur tampilan bar chart
+                        fig.update_traces(textposition='outside')
+                        fig.update_layout(
+                            xaxis_title="Kelompok Umur",
+                            yaxis_title="Angka Melek Huruf (Persen)",
+                            title_x=0.5,
+                            bargap=0.2,
+                            barmode='group'
+                        )
 
-                # Ekstrak tahun dari kolom "Tahun dan Kelompok"
-                    filtered_data_melted['Tahun'] = filtered_data_melted['Tahun dan Kelompok'].str.extract('(\d+)').astype(int)
-
-                # Tampilkan tabel baru dengan persentase
-                    st.dataframe(filtered_data_melted)
-
-                # Buat bar chart interaktif
-                    fig = px.bar(
-                        filtered_data_melted,
-                        x="Tahun",
-                        y="Angka Melek Huruf",
-                        color='Tahun dan Kelompok',  # Tambahkan warna berdasarkan kelompok tahun
-                        title=f"Bar Chart: Angka Melek Huruf ({age_group}, {gender}, 2021-2023)",
-                        labels={"Tahun": "Tahun", "Angka Melek Huruf": "Angka Melek Huruf (Persen)"},
-                        hover_data=["Tahun dan Kelompok"],
-                        text="Angka Melek Huruf"
-                    )
-
-                # Atur tampilan bar chart
-                    fig.update_traces(textposition='outside')
-                    fig.update_layout(
-                        xaxis_title="Tahun",
-                        yaxis_title="Angka Melek Huruf (Persen)",
-                        title_x=0.5,
-                        bargap=0.2,
-                        barmode='group'
-                    )
-
-                # Tampilkan bar chart di Streamlit
-                    st.plotly_chart(fig)
-
+                        # Tampilkan bar chart di Streamlit
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'Indeks Pemberdayaan Gender' and visual_type == "Bar Chart":
-                    st.write("### ")
-                    st.markdown("### Visualisasi Indeks Pemberdayaan Gender")
+                    st.markdown("### ")
 
-                # Data IDG 2021-2023 dari gambar (anda dapat mengganti ini dengan data aslinya)
-                    data = {
-                        'Wilayah': ['Jawa Timur', 'Kabupaten Pacitan', 'Kabupaten Ponorogo', 'Kabupaten Trenggalek', 'Kabupaten Tulungagung', 'Kabupaten Blitar', 
-                                    'Kabupaten Kediri', 'Kabupaten Malang', 'Kabupaten Lumajang', 'Kabupaten Jember', 'Kabupaten Banyuwangi', 
-                                    'Kabupaten Bondowoso', 'Kabupaten Situbondo', 'Kabupaten Probolinggo', 'Kabupaten Pasuruan', 'Kabupaten Sidoarjo', 
-                                    'Kabupaten Mojokerto', 'Kabupaten Jombang', 'Kabupaten Nganjuk', 'Kabupaten Madiun', 'Kabupaten Magetan', 
-                                    'Kabupaten Ngawi', 'Kabupaten Bojonegoro', 'Kabupaten Tuban', 'Kabupaten Lamongan', 'Kabupaten Gresik', 
-                                    'Kabupaten Bangkalan', 'Kabupaten Sampang', 'Kabupaten Pamekasan', 'Kabupaten Sumenep', 'Kota Kediri', 
-                                    'Kota Blitar', 'Kota Malang', 'Kota Probolinggo', 'Kota Pasuruan', 'Kota Mojokerto', 'Kota Madiun', 'Kota Surabaya', 
-                                    'Kota Batu'],
-                        'IDG 2021': [72.36, 70.45, 67.63, 61.43, 65.06, 79.68, 71.64, 76.69, 59.38, 66.16, 74.84, 65.35, 73.60, 68.75, 65.75, 67.10, 
-                                    80.20, 73.76, 69.78, 68.97, 70.50, 71.33, 56.14, 63.51, 74.05, 71.48, 60.03, 55.67, 52.44, 61.79, 84.17, 
-                                    68.60, 77.63, 65.05, 54.94, 70.68, 76.75, 82.82, 68.80],
-                        'IDG 2022': [74.42, 68.12, 67.69, 62.15, 69.66, 81.92, 73.20, 76.38, 59.61, 68.69, 74.57, 67.87, 74.77, 68.36, 67.12, 67.34, 
-                                    80.59, 72.24, 70.87, 70.23, 71.45, 74.49, 56.80, 65.03, 75.49, 70.13, 61.86, 50.18, 55.54, 60.81, 85.03, 
-                                    68.61, 78.77, 65.81, 54.80, 72.34, 78.03, 83.20, 67.83],
-                        'IDG 2023': [74.90, 73.24, 68.52, 62.63, 72.92, 81.32, 73.35, 76.45, 59.88, 66.97, 75.01, 64.80, 73.16, 69.25, 65.28, 67.53, 
-                                    81.25, 71.32, 72.46, 71.72, 72.08, 77.00, 56.82, 65.05, 73.15, 70.47, 62.34, 59.04, 55.85, 62.77, 86.29, 
-                                    67.63, 78.54, 68.74, 56.11, 76.15, 78.94, 85.29, 68.65]
-                    }
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pemberdayaan Gender.xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Konversi ke DataFrame
-                    df = pd.DataFrame(data)
+                    # Mengubah data menjadi format long untuk visualisasi multi-line plot
+                    df_long = df.melt(id_vars='Wilayah', value_vars=[
+                                      'IDG 2021', 'IDG 2022', 'IDG 2023'], var_name='Tahun', value_name='Indeks')
 
-                # Sidebar untuk memilih tahun
-                    st.sidebar.title("Filter Data")
-                    selected_year = st.sidebar.selectbox('Pilih Tahun', ['IDG 2021', 'IDG 2022', 'IDG 2023'])
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Tampilkan judul visualisasi
-                    st.markdown(f"### Visualisasi Indeks Pemberdayaan Gender ({selected_year})")
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write(
+                            "Tabel Indeks Pemberdayaan Gender :")
+                        st.dataframe(df)
+                        # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Menampilkan filter multiselect untuk memilih tahun
+                        st.sidebar.title("Filter Data")
+                        selected_year = st.sidebar.selectbox(
+                            'Pilih Tahun', ['IDG 2021', 'IDG 2022', 'IDG 2023'])
 
-                # Plot Bar Chart menggunakan Plotly
-                    fig = px.bar(df, x='Wilayah', y=selected_year, title=f'Indeks Pemberdayaan Gender {selected_year}',
-                                labels={selected_year: 'Indeks Pemberdayaan Gender (IDG)'}, color=selected_year, height=600)
+                        # Plot Bar Chart menggunakan Plotly
+                        fig = px.bar(df, x='Wilayah', y=selected_year, title=f'Indeks Pemberdayaan Gender {selected_year}',
+                                     labels={selected_year: 'Indeks Pemberdayaan Gender (IDG)'}, color=selected_year, height=600)
 
-                # Tampilkan Bar Chart di Streamlit
-                    st.plotly_chart(fig)
-
+                        # Tampilkan Bar Chart di Streamlit
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'Indeks Pembangunan Gender' and visual_type == "Bar Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi Indeks Pembangunan Gender")
 
-                # Data IPG 2021-2023
-                    data = {
-                        'Wilayah': ['Jawa Timur', 'Kabupaten Pacitan', 'Kabupaten Ponorogo', 'Kabupaten Trenggalek', 'Kabupaten Tulungagung', 'Kabupaten Blitar',
-                                    'Kabupaten Kediri', 'Kabupaten Malang', 'Kabupaten Lumajang', 'Kabupaten Jember', 'Kabupaten Banyuwangi',
-                                    'Kabupaten Bondowoso', 'Kabupaten Situbondo', 'Kabupaten Probolinggo', 'Kabupaten Pasuruan', 'Kabupaten Sidoarjo',
-                                    'Kabupaten Mojokerto', 'Kabupaten Jombang', 'Kabupaten Nganjuk', 'Kabupaten Madiun', 'Kabupaten Magetan',
-                                    'Kabupaten Ngawi', 'Kabupaten Bojonegoro', 'Kabupaten Tuban', 'Kabupaten Lamongan', 'Kabupaten Gresik',
-                                    'Kabupaten Bangkalan', 'Kabupaten Sampang', 'Kabupaten Pamekasan', 'Kabupaten Sumenep', 'Kota Kediri',
-                                    'Kota Blitar', 'Kota Malang', 'Kota Probolinggo', 'Kota Pasuruan', 'Kota Mojokerto', 'Kota Madiun', 'Kota Surabaya', 'Kota Batu'],
-                        'IPG 2021': [91.67, 85.09, 93.65, 92.56, 95.52, 92.76, 92.90, 88.34, 88.39, 84.82, 86.96, 90.75, 87.16, 85.39, 90.89, 94.26, 91.24, 90.23, 93.76, 91.77, 93.65, 92.32, 90.21, 88.06, 88.99, 90.20, 86.95, 86.32, 86.50, 81.18, 94.21, 97.36, 95.24, 96.01, 96.27, 93.47, 94.42, 93.90, 89.89],
-                        'IPG 2022': [92.08, 85.65, 93.96, 92.41, 95.63, 93.22, 92.85, 88.35, 88.77, 85.31, 87.26, 91.10, 87.32, 86.02, 91.02, 94.68, 91.37, 90.51, 93.89, 92.14, 93.88, 92.53, 90.63, 88.39, 89.50, 90.78, 87.35, 86.79, 86.83, 81.88, 94.53, 97.37, 95.54, 96.24, 96.74, 93.63, 94.57, 94.21, 90.10],
-                        'IPG 2023': [92.15, 86.16, 94.40, 92.57, 95.45, 93.40, 93.25, 88.60, 89.06, 85.52, 87.50, 91.17, 87.59, 86.34, 91.02, 94.72, 91.63, 90.65, 94.08, 92.47, 94.07, 92.89, 90.87, 88.52, 89.84, 91.01, 87.56, 86.97, 86.97, 82.29, 94.58, 97.49, 95.65, 96.48, 96.81, 93.63, 95.18, 94.36, 90.54]
-                    }
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Gender.xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Konversi data menjadi DataFrame
-                    df = pd.DataFrame(data)
+                    # Mengubah data menjadi format long untuk visualisasi multi-line plot
+                    df_long = df.melt(id_vars='Wilayah', value_vars=[
+                                      'IPG 2021', 'IPG 2022', 'IPG 2023'], var_name='Tahun', value_name='Indeks')
 
-                # Sidebar untuk memilih tahun
-                    st.sidebar.title("Filter Data")
-                    selected_year = st.sidebar.selectbox('Pilih Tahun', ['IPG 2021', 'IPG 2022', 'IPG 2023'])
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Tampilkan judul visualisasi
-                    st.markdown(f"### Visualisasi Indeks Pembangunan Gender ({selected_year})")
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write(
+                            "Tabel Indeks Pembangunan Gender :")
+                        st.dataframe(df)
+                        # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Sidebar untuk memilih tahun
+                        st.sidebar.title("Filter Data")
+                        selected_year = st.sidebar.selectbox(
+                            'Pilih Tahun', ['IPG 2021', 'IPG 2022', 'IPG 2023'])
 
-                # Buat Bar Chart menggunakan Plotly
-                    fig = px.bar(df, x='Wilayah', y=selected_year, title=f'Indeks Pembangunan Gender {selected_year}',
-                                labels={selected_year: 'Indeks Pembangunan Gender (IPG)'}, color=selected_year, height=600)
+                        # Buat Bar Chart menggunakan Plotly
+                        fig = px.bar(df, x='Wilayah', y=selected_year, title=f'Indeks Pembangunan Gender {selected_year}',
+                                     labels={selected_year: 'Indeks Pembangunan Gender (IPG)'}, color=selected_year, height=600)
 
-                # Tampilkan Bar Chart di Streamlit
-                    st.plotly_chart(fig)
-
+                        # Tampilkan Bar Chart di Streamlit
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF)' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF)")
 
-                # Data IPG 
-                    data = {
-                        'Wilayah': ['Jawa Timur', 'Kabupaten Pacitan', 'Kabupaten Ponorogo', 'Kabupaten Trenggalek', 'Kabupaten Tulungagung', 'Kabupaten Blitar',
-                                    'Kabupaten Kediri', 'Kabupaten Malang', 'Kabupaten Lumajang', 'Kabupaten Jember', 'Kabupaten Banyuwangi',
-                                    'Kabupaten Bondowoso', 'Kabupaten Situbondo', 'Kabupaten Probolinggo', 'Kabupaten Pasuruan', 'Kabupaten Sidoarjo',
-                                    'Kabupaten Mojokerto', 'Kabupaten Jombang', 'Kabupaten Nganjuk', 'Kabupaten Madiun', 'Kabupaten Magetan',
-                                    'Kabupaten Ngawi', 'Kabupaten Bojonegoro', 'Kabupaten Tuban', 'Kabupaten Lamongan', 'Kabupaten Gresik',
-                                    'Kabupaten Bangkalan', 'Kabupaten Sampang', 'Kabupaten Pamekasan', 'Kabupaten Sumenep', 'Kota Kediri',
-                                    'Kota Blitar', 'Kota Malang', 'Kota Probolinggo', 'Kota Pasuruan', 'Kota Mojokerto', 'Kota Madiun', 'Kota Surabaya', 'Kota Batu'],
-                        'IPG 2021': [92.36, 85.65, 94.48, 93.46, 96.05, 93.34, 93.61, 89.14, 88.86, 85.14, 87.20, 90.86, 87.25, 85.63, 91.35, 94.83, 91.92, 90.77, 94.29, 92.37, 94.50, 93.13, 90.87, 88.72, 89.69, 90.63, 87.03, 86.40, 86.60, 81.39, 95.23, 97.91, 96.16, 96.36, 96.91, 94.48, 95.34, 94.99, 90.66],
-                        'IPG 2022': [92.86, 86.29, 94.85, 93.07, 96.28, 93.85, 93.64, 89.21, 89.30, 85.68, 87.53, 91.20, 87.41, 86.33, 91.58, 95.27, 92.10, 91.11, 94.47, 92.82, 94.77, 93.42, 91.36, 89.09, 90.29, 91.27, 87.45, 86.93, 86.99, 82.16, 95.55, 97.94, 96.47, 96.66, 97.46, 94.65, 95.52, 95.29, 90.94],
-                        'IPG 2023': [92.96, 86.79, 94.98, 93.18, 95.92, 93.89, 93.89, 89.26, 89.73, 86.03, 87.96, 91.38, 87.78, 86.76, 91.78, 95.27, 92.23, 91.13, 94.75, 93.02, 94.78, 93.58, 91.63, 89.27, 90.47, 91.39, 87.78, 87.28, 87.28, 82.61, 95.76, 98.09, 96.76, 97.06, 97.59, 95.04, 95.87, 95.56, 91.20]
-                    }
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF).xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Membuat DataFrame dari data
-                    df = pd.DataFrame(data)
+                    # Mengubah data menjadi format long untuk visualisasi multi-line plot
+                    df_long = df.melt(id_vars='Wilayah', value_vars=[
+                                      'IPG 2021 (menggunakan UHH hasil SP2020 LF)', 'IPG 2022 (menggunakan UHH hasil SP2020 LF)', 'IPG 2023 (menggunakan UHH hasil SP2020 LF)'], var_name='Tahun', value_name='Indeks')
 
-                # Mengubah data menjadi format long untuk visualisasi multi-line plot
-                    df_long = df.melt(id_vars='Wilayah', value_vars=['IPG 2021', 'IPG 2022', 'IPG 2023'], var_name='Tahun', value_name='Indeks')
+                    # Membuat tab
+                    tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Filter Tahun yang dipilih oleh pengguna
-                    tahun_terpilih = st.multiselect(
-                        'Pilih Tahun yang ingin ditampilkan:',
-                        options=['IPG 2021', 'IPG 2022', 'IPG 2023'],
-                        default=['IPG 2021', 'IPG 2022', 'IPG 2023']
-                    )
+                    # Tab 1 untuk menampilkan tabel data
+                    with tab1:
+                        st.write(
+                            "Tabel Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF):")
+                        st.dataframe(df)
+                    # Tab 2 untuk menampilkan visualisasi
+                    with tab2:
+                        # Menampilkan filter multiselect untuk memilih tahun
+                        tahun_terpilih = st.multiselect(
+                            'Pilih Tahun yang ingin ditampilkan:',
+                            options=['IPG 2021 (menggunakan UHH hasil SP2020 LF)',
+                                     'IPG 2022 (menggunakan UHH hasil SP2020 LF)', 'IPG 2023 (menggunakan UHH hasil SP2020 LF)'],
+                            default=['IPG 2021 (menggunakan UHH hasil SP2020 LF)',
+                                     'IPG 2022 (menggunakan UHH hasil SP2020 LF)', 'IPG 2023 (menggunakan UHH hasil SP2020 LF)'],
+                            key='tahun_ipg'  # Tambahkan key unik di sini
+                        )
 
-                # Filter data berdasarkan tahun yang dipilih
-                    df_filtered = df_long[df_long['Tahun'].isin(tahun_terpilih)]
+                        # Filter data berdasarkan tahun yang dipilih
+                        df_filtered = df_long[df_long['Tahun'].isin(
+                            tahun_terpilih)]
 
-                # Membuat visualisasi Line Chart menggunakan Plotly
-                    fig = px.line(df_filtered, x='Wilayah', y='Indeks', color='Tahun', 
-                                title='Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF)', 
-                                labels={'Indeks': 'Indeks Pembangunan Gender', 'Tahun': 'Tahun'}, 
-                                markers=True, height=600)
+                        # Membuat visualisasi Line Chart menggunakan Plotly
+                        fig = px.line(df_filtered, x='Wilayah', y='Indeks', color='Tahun',
+                                      title='Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF)',
+                                      labels={
+                                          'Indeks': 'Indeks Pembangunan Gender', 'Tahun': 'Tahun'},
+                                      markers=True, height=600)
 
-                # Menyesuaikan layout untuk memperjelas visualisasi
-                    fig.update_layout(
-                        hovermode="x unified", 
-                        xaxis_title="Wilayah", 
-                        yaxis_title="Indeks Pembangunan Gender", 
-                        legend_title="Tahun", 
-                        template='plotly_white'
-                    )
+                        # Menyesuaikan layout untuk memperjelas visualisasi
+                        fig.update_layout(
+                            hovermode="x unified",
+                            xaxis_title="Wilayah",
+                            yaxis_title="Indeks Pembangunan Gender",
+                            legend_title="Tahun",
+                            template='plotly_white'
+                        )
 
-                # Menampilkan visualisasi di Streamlit
-                    st.plotly_chart(fig)
-
-                # Menentukan data yang dipilih
-                    selected_data_title = 'Indeks Ketimpangan Gender (IKG)'  # Contoh
-                    visual_type = "Line Chart"  # Contoh
+                        # Menampilkan visualisasi di Streamlit
+                        st.plotly_chart(fig)
 
                 elif selected_data_title == 'Indeks Ketimpangan Gender (IKG)' and visual_type == "Line Chart":
                     st.write("### ")
-                    st.markdown("### Visualisasi Indeks Ketimpangan Gender (IKG)")
 
-                # Data IKG
-                    data = {
-                        'Wilayah': ['Jawa Timur', 'Kabupaten Pacitan', 'Kabupaten Ponorogo', 'Kabupaten Trenggalek', 'Kabupaten Tulungagung', 'Kabupaten Blitar', 'Kabupaten Kediri', 'Kabupaten Malang', 'Kabupaten Lumajang', 'Kabupaten Jember', 'Kabupaten Banyuwangi', 'Kabupaten Bondowoso', 'Kabupaten Situbondo', 'Kabupaten Probolinggo', 'Kabupaten Pasuruan', 'Kabupaten Sidoarjo', 'Kabupaten Mojokerto', 'Kabupaten Jombang', 'Kabupaten Nganjuk', 'Kabupaten Madiun', 'Kabupaten Magetan', 'Kabupaten Ngawi', 'Kabupaten Bojonegoro', 'Kabupaten Tuban', 'Kabupaten Lamongan', 'Kabupaten Gresik', 'Kabupaten Bangkalan', 'Kabupaten Sampang', 'Kabupaten Pamekasan', 'Kabupaten Sumenep', 'Kota Kediri', 'Kota Blitar', 'Kota Malang', 'Kota Probolinggo', 'Kota Pasuruan', 'Kota Mojokerto', 'Kota Madiun', 'Kota Surabaya', 'Kota Batu'],
-                        'IKG 2021': [0.460, 0.470, 0.358, 0.455, 0.361, 0.287, 0.349, 0.422, 0.482, 0.487, 0.326, 0.499, 0.465, 0.527, 0.537, 0.255, 0.402, 0.422, 0.402, 0.354, 0.390, 0.381, 0.443, 0.494, 0.423, 0.404, 0.606, 0.618, 0.660, 0.596, 0.117, 0.199, 0.136, 0.269, 0.378, 0.170, 0.094, 0.206, 0.267],
-                        'IKG 2022': [0.440, 0.451, 0.394, 0.497, 0.375, 0.355, 0.378, 0.402, 0.472, 0.488, 0.236, 0.526, 0.474, 0.485, 0.531, 0.301, 0.349, 0.399, 0.382, 0.401, 0.192, 0.150, 0.439, 0.417, 0.272, 0.407, 0.594, 0.595, 0.644, 0.570, 0.109, 0.194, 0.350, 0.236, 0.418, 0.156, 0.093, 0.230, 0.310],
-                        'IKG 2023': [0.423, 0.444, 0.358, 0.425, 0.244, 0.260, 0.372, 0.436, 0.322, 0.406, 0.230, 0.547, 0.407, 0.479, 0.539, 0.179, 0.343, 0.267, 0.427, 0.405, 0.173, 0.171, 0.423, 0.359, 0.334, 0.409, 0.615, 0.582, 0.601, 0.593, 0.093, 0.188, 0.131, 0.392, 0.310, 0.119, 0.079, 0.128, 0.378]
-                    }
+                    # Membaca data dari file Excel
+                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Ketimpangan Gender (IKG).xlsx'
+                    df = pd.read_excel(file_path)
 
-                # Membuat DataFrame dari data
-                    df = pd.DataFrame(data)
+                    # Mengubah data menjadi format long untuk visualisasi multi-line plot
+                    df_long = df.melt(id_vars='Wilayah', value_vars=[
+                                      'IKG 2021', 'IKG 2022', 'IKG 2023'], var_name='Tahun', value_name='IKG')
 
-                # Mengubah data menjadi format long untuk visualisasi multi-line plot
-                    df_long = df.melt(id_vars='Wilayah', value_vars=['IKG 2021', 'IKG 2022', 'IKG 2023'], var_name='Tahun', value_name='IKG')
-
-                # Membuat tab
+                    # Membuat tab
                     tab1, tab2 = st.tabs(["Tabel Data", "Visualisasi"])
 
-                # Tab 1 untuk menampilkan tabel data
+                    # Tab 1 untuk menampilkan tabel data
                     with tab1:
                         st.write("Tabel Indeks Ketimpangan Gender (IKG):")
                         st.dataframe(df)
 
-                # Tab 2 untuk menampilkan visualisasi
+                    # Tab 2 untuk menampilkan visualisasi
                     with tab2:
-                # Menampilkan filter multiselect untuk memilih tahun
+                        # Menampilkan filter multiselect untuk memilih tahun
                         tahun_terpilih = st.multiselect(
                             'Pilih Tahun yang ingin ditampilkan:',
                             options=['IKG 2021', 'IKG 2022', 'IKG 2023'],
-                            default=['IKG 2021', 'IKG 2022', 'IKG 2023']
+                            default=['IKG 2021', 'IKG 2022', 'IKG 2023'],
+                            key='tahun_ikg'  # Tambahkan key unik di sini
                         )
 
-                # Filter data berdasarkan tahun yang dipilih
-                    df_filtered = df_long[df_long['Tahun'].isin(tahun_terpilih)]
+                        # Filter data berdasarkan tahun yang dipilih
+                        df_filtered = df_long[df_long['Tahun'].isin(
+                            tahun_terpilih)]
 
-                # Membuat visualisasi Line Chart menggunakan Plotly
-                    fig = px.line(df_filtered, x='Wilayah', y='IKG', color='Tahun', 
-                                    title='Indeks Ketimpangan Gender (IKG) di Wilayah Jawa Timur', 
-                                    labels={'IKG': 'Indeks Ketimpangan Gender', 'Tahun': 'Tahun'}, 
-                                    markers=True, height=600)
+                        # Membuat visualisasi Line Chart menggunakan Plotly
+                        fig = px.line(df_filtered, x='Wilayah', y='IKG', color='Tahun',
+                                      title='Indeks Ketimpangan Gender (IKG) di Wilayah Jawa Timur',
+                                      labels={
+                                          'IKG': 'Indeks Ketimpangan Gender', 'Tahun': 'Tahun'},
+                                      markers=True, height=600)
 
-                # Menyesuaikan layout untuk memperjelas visualisasi
-                    fig.update_layout(
-                                hovermode="x unified", 
-                                xaxis_title="Wilayah", 
-                                yaxis_title="Indeks Ketimpangan Gender", 
-                                legend_title="Tahun", 
-                                template='plotly_white'
-                            )
+                        # Menyesuaikan layout untuk memperjelas visualisasi
+                        fig.update_layout(
+                            hovermode="x unified",
+                            xaxis_title="Wilayah",
+                            yaxis_title="Indeks Ketimpangan Gender",
+                            legend_title="Tahun",
+                            template='plotly_white'
+                        )
 
-                # Menampilkan visualisasi di Streamlit
-                    st.plotly_chart(fig)
-                
+                        # Menampilkan visualisasi di Streamlit
+                        st.plotly_chart(fig)
+
         else:
             st.error("File untuk data ini belum tersedia.")
     else:
-       data = None
+        data = None
