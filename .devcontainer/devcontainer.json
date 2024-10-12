@@ -6,7 +6,11 @@
     "codespaces": {
       "openFiles": [
         "README.md",
+        HEAD
         "streamlit_app.py"
+        
+        "dashboard.visualisasi.bps.py"
+4b7bd5bbe51bb4749efb31a40067e3bfa71951fa
       ]
     },
     "vscode": {
@@ -19,7 +23,11 @@
   },
   "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
   "postAttachCommand": {
+<<<<<<< HEAD
     "server": "streamlit run streamlit_app.py --server.enableCORS false --server.enableXsrfProtection false"
+=======
+    "server": "streamlit run dashboard.visualisasi.bps.py --server.enableCORS false --server.enableXsrfProtection false"
+>>>>>>> 4b7bd5bbe51bb4749efb31a40067e3bfa71951fa
   },
   "portsAttributes": {
     "8501": {

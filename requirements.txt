@@ -1,1 +1,9 @@
+HEAD
 streamlit
+
+streamlit
+pandas
+matplotlib
+seaborn
+numpy
+4b7bd5bbe51bb4749efb31a40067e3bfa71951fa
