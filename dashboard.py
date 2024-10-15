@@ -9,8 +9,8 @@ import numpy as np
 import io
 
 # File logo lokal atau URL gambar
-logo_path1 = "/workspaces/dashboard-visualization-bps/logo_bps-removebg-preview.png"
-logo_path2 = "/workspaces/dashboard-visualization-bps/logo_mojokerto-removebg-preview.png"
+logo_path1 = "static/logo_bps-removebg-preview.png"
+logo_path2 = "static/logo_mojokerto-removebg-preview.png"
 
 
 col1, col2, col3 = st.columns([8, 1, 1])
@@ -54,106 +54,106 @@ st.markdown(
 data_files = {
     'PDRB': {
         'PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran, Kota Mojokerto 2019-2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran, Kota Mojokerto 2019-2023.xlsx',
         ],
         'Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto 2019–2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto 2019–2023.xlsx',
         ],
         'Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019- 2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019- 2023.xlsx',
         ],
         'Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023.xlsx',
         ],
         'Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023.xlsx',
         ],
         'Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023.xlsx',
         ],
         'Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023.xlsx',
+            'PDRB Pengeluaran Publikasi Softfile/Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023.xlsx',
         ],
         'Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Yang Ada/Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023.xlsx',
+            'PDRB Pengeluaran Yang Ada/Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023.xlsx',
         ],
         'Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Yang Ada/Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023.xlsx',
+            'PDRB Pengeluaran Yang Ada/Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023.xlsx',
         ],
         'Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Lapangan Usaha Publikasi Softfile/Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023.xlsx',
+            'PDRB Lapangan Usaha Publikasi Softfile/Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023.xlsx',
         ],
         'Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023': [
-            '/workspaces/dashboard-visualization-bps/PDRB Lapangan Usaha Publikasi Softfile/Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023.xlsx',
+            'PDRB Lapangan Usaha Publikasi Softfile/Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023.xlsx',
         ],
         # Tambahkan data PDRB lainnya di sini
     },
     'Kependudukan': {
         'Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023.xlsx',
         ],
         'Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx',
         ],
         'Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
         ],
         'Jumlah Kelahiran menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Kelahiran menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Jumlah Kelahiran menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx',
         ],
         'Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
         ],
         'Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
         ],
         'Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx',
         ],
         'Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto 2023.xlsx',
         ],
         'Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto, 2023': [
-            '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto 2023.xlsx',
+            'Kependudukan Publikasi Softfile/Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto 2023.xlsx',
         ],
         # Tambahkan data Kependudukan lainnya di sini
     },
     'IPM': {
         'Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023.xlsx',
+            'IPM Yang Ada/Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023.xlsx',
         ],
         'Harapan Lama Sekolah (HLS) 2010-2023': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Harapan Lama Sekolah (HLS) 2010-2023.xlsx',
+            'IPM Yang Ada/Harapan Lama Sekolah (HLS) 2010-2023.xlsx',
         ],
         'Angka Melek Huruf (Persen) 2016-2006': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Melek Huruf (Persen) 2016-2006.xlsx',
+            'IPM Yang Ada/Angka Melek Huruf (Persen) 2016-2006.xlsx',
         ],
         'Angka Harapan Hidup Jawa Timur (LF SP2020)': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Harapan Hidup Jawa Timur (LF SP2020).xlsx',
+            'IPM Yang Ada/Angka Harapan Hidup Jawa Timur (LF SP2020).xlsx',
         ],
         'IPM Jawa Timur 2010-2023': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/IPM Jawa Timur 2010-2023.xlsx',
+            'IPM Yang Ada/IPM Jawa Timur 2010-2023.xlsx',
         ],
         'Indeks Pembangunan Manusia Menurut Kabupaten dan Kota': [
             'IPM Yang Ada/Indeks Pembangunan Manusia Menurut Kabupaten_Kota.xlsx',
         ],
         'Indeks Pembangunan Manusia (UHH LF SP2020)': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Manusia (UHH LF SP2020).xlsx',
+            'IPM Yang Ada/Indeks Pembangunan Manusia (UHH LF SP2020).xlsx',
         ],
         'Angka Melek Huruf (Penduduk Usia 15 +)': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Melek Huruf (Penduduk Usia 15 +).xlsx',
+            'IPM Yang Ada/Angka Melek Huruf (Penduduk Usia 15 +).xlsx',
         ],
         'Indeks Pemberdayaan Gender': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pemberdayaan Gender.xlsx',
+            'IPM Yang Ada/Indeks Pemberdayaan Gender.xlsx',
         ],
         'Indeks Pembangunan Gender': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Gender.xlsx',
+            'IPM Yang Ada/Indeks Pembangunan Gender.xlsx',
         ],
         'Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF)': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF).xlsx',
+            'IPM Yang Ada/Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF).xlsx',
         ],
         'Indeks Ketimpangan Gender (IKG)': [
-            '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Ketimpangan Gender (IKG).xlsx',
+            'IPM Yang Ada/Indeks Ketimpangan Gender (IKG).xlsx',
         ],
         # Tambahkan data IPM lainnya di sini
     }
@@ -198,7 +198,7 @@ def load_data_pdrb(file_path):
                 st.error(f"Error converting data in column {col}: {e}")
 
         # Cek judul data dan tambahkan logika pemformatan
-        if file_path.endswith('/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto 2019–2023.xlsx'):  # Ubah judul sesuai kebutuhan
+        if file_path.endswith('PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto 2019–2023.xlsx'):  # Ubah judul sesuai kebutuhan
             # Jika nilai desimal, kalikan dengan 100 dan format dengan simbol %
             if data[col].dtype == 'float64':  # Pastikan tipe data float
                 data[col] = data[col] * 100  # Ubah ke persen
@@ -322,7 +322,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran, Kota Mojokerto 2019-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran, Kota Mojokerto 2019-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -423,7 +423,7 @@ if data_type in data_files:
                 elif selected_data_title == 'Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023' and visual_type == "Line Chart":
                     st.markdown("### ")
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto 2019–2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Atas Dasar Harga Berlaku Menurut Komponen Pengeluaran Kota Mojokerto 2019–2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -524,7 +524,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019- 2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Laju Pertumbuhan PDRB ADHK 2010 Menurut Komponen Pengeluaran Kota Mojokerto, 2019- 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -625,7 +625,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Indeks Implisit PDRB Menurut Pengeluaran Kota Mojokerto, 2019-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -723,7 +723,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Pertumbuhan Indeks Implisit PDRB Menurut Komponen Pengeluaran Kota Mojokerto, 2019-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -825,7 +825,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Perkembangan Komponen Konsumsi Rumah Tangga Kota Mojokerto, 2019-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -959,7 +959,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Perkembangan Pengeluaran Konsumsi Akhir Pemerintah Kota Mojokerto, 2019-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -1093,7 +1093,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Yang Ada/PDRB Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Yang Ada/PDRB Laju Indeks Harga Implisit PDRB Kota Mojokerto Menurut Pengeluaran 2011-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -1195,7 +1195,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023.xlsx'
+                    file_path = 'PDRB Pengeluaran Publikasi Softfile/Distribusi PDRB Kota Mojokerto Atas Dasar Harga Berlaku Menurut Pengeluaran 2010-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -1329,7 +1329,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Lapangan Usaha Publikasi Softfile/Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023.xlsx'
+                    file_path = 'PDRB Lapangan Usaha Publikasi Softfile/Distribusi Persentase Produk Domestik Regional Bruto Kota Mojokerto Atas Dasar Harga Berlaku Menurut Lapangan Usaha, 2019─2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -1463,7 +1463,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/PDRB Lapangan Usaha Publikasi Softfile/Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023.xlsx'
+                    file_path = 'PDRB Lapangan Usaha Publikasi Softfile/Laju Pertumbuhan Produk Domestik Regional Bruto Atas Dasar Harga Konstan 2010 Kota Mojokerto Menurut Lapangan Usaha (persen), 2019─2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Pastikan kolom tahun dalam format string
@@ -1597,7 +1597,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Penduduk, Distribusi Persentase Penduduk, Kepadatan Penduduk, Rasio Jenis Kelamin Penduduk Menurut Kecamatan di Kota Mojokerto, 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Memformat kolom 'Persentase Penduduk' dengan simbol %
@@ -1662,7 +1662,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Menghapus spasi dari nilai di dalam kolom 'Laki-laki', 'Perempuan', dan 'Jumlah'
@@ -1758,7 +1758,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Penduduk akhir tahun Warga Negara Asing menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah nilai kolom 'Persentase' menjadi bentuk persen, pastikan hanya memformat angka
@@ -1846,7 +1846,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Kelahiran menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Jumlah Kelahiran menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto , 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah nilai kolom 'Persentase' menjadi bentuk persen, pastikan hanya memformat angka
@@ -1935,7 +1935,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Jumlah Kematian menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah nilai kolom 'Persentase' menjadi bentuk persen, pastikan hanya memformat angka
@@ -2024,7 +2024,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Jumlah Penduduk datang menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah nilai kolom 'Persentase' menjadi bentuk persen
@@ -2101,7 +2101,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Jumlah Penduduk keluar menurut Kelurahan dan Jenis Kelamin di Kota Mojokerto 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah nilai kolom 'Persentase' menjadi bentuk persen
@@ -2179,7 +2179,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Banyaknya akte kependudukan diterbitkan menurut jenisnya menurut bulan di Kota Mojokerto 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Strip whitespace from column names
@@ -2293,7 +2293,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/Kependudukan Publikasi Softfile/Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto 2023.xlsx'
+                    file_path = 'Kependudukan Publikasi Softfile/Kepadatan penduduk akhir tahun Warga Negara Indonesia menurut Kelurahan di Kota Mojokerto 2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-line plot
@@ -2330,7 +2330,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023.xlsx'
+                    file_path = 'IPM Yang Ada/Pengeluaran Per Kapita Riil Disesuaikan (Ribu Rupiah) 2010-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Memeriksa kolom yang ada
@@ -2455,7 +2455,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Harapan Lama Sekolah (HLS) 2010-2023.xlsx'
+                    file_path = 'IPM Yang Ada/Harapan Lama Sekolah (HLS) 2010-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Memeriksa kolom yang ada
@@ -2577,7 +2577,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Melek Huruf (Persen) 2016-2006.xlsx'
+                    file_path = 'IPM Yang Ada/Angka Melek Huruf (Persen) 2016-2006.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Memeriksa kolom yang ada
@@ -2676,7 +2676,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Harapan Hidup Jawa Timur (LF SP2020).xlsx'
+                    file_path = 'IPM Yang Ada/Angka Harapan Hidup Jawa Timur (LF SP2020).xlsx'
                     df = pd.read_excel(file_path)
 
                     # Definisikan value_vars di sini
@@ -2770,7 +2770,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/IPM Jawa Timur 2010-2023.xlsx'
+                    file_path = 'IPM Yang Ada/IPM Jawa Timur 2010-2023.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Definisikan value_vars di sini
@@ -2824,7 +2824,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Manusia Menurut Kabupaten_Kota.xlsx'
+                    file_path = 'IPM Yang Ada/Indeks Pembangunan Manusia Menurut Kabupaten_Kota.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-bar plot
@@ -2889,7 +2889,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Manusia (UHH LF SP2020).xlsx'
+                    file_path = 'IPM Yang Ada/Indeks Pembangunan Manusia (UHH LF SP2020).xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-bar plot
@@ -2949,7 +2949,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Angka Melek Huruf (Penduduk Usia 15 +).xlsx'
+                    file_path = 'IPM Yang Ada/Angka Melek Huruf (Penduduk Usia 15 +).xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-line plot
@@ -3015,7 +3015,7 @@ if data_type in data_files:
                     st.markdown("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pemberdayaan Gender.xlsx'
+                    file_path = 'IPM Yang Ada/Indeks Pemberdayaan Gender.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-line plot
@@ -3048,7 +3048,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Gender.xlsx'
+                    file_path = 'IPM Yang Ada/Indeks Pembangunan Gender.xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-line plot
@@ -3081,7 +3081,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF).xlsx'
+                    file_path = 'IPM Yang Ada/Indeks Pembangunan Gender (menggunakan UHH hasil SP2020 LF).xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-line plot
@@ -3135,7 +3135,7 @@ if data_type in data_files:
                     st.write("### ")
 
                     # Membaca data dari file Excel
-                    file_path = '/workspaces/dashboard-visualization-bps/IPM Yang Ada/Indeks Ketimpangan Gender (IKG).xlsx'
+                    file_path = 'IPM Yang Ada/Indeks Ketimpangan Gender (IKG).xlsx'
                     df = pd.read_excel(file_path)
 
                     # Mengubah data menjadi format long untuk visualisasi multi-line plot
