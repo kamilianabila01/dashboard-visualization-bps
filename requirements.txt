@@ -1,6 +1,7 @@
 streamlit
-pandas
+pandas>=1.0.0
 matplotlib
 seaborn
 numpy
 plotly
+openpyxl
